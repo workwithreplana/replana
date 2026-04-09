@@ -1,0 +1,3657 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REPLANA</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+<style>
+:root {
+  /* Colors - Architect Dark Layout */
+  --color-base: #000000; 
+  --color-surface: #111111;
+  --color-border: #2a2a2a; 
+  
+  --color-primary: #ffffff; 
+  --color-primary-hover: #cccccc;
+  --color-primary-light: rgba(255, 255, 255, 0.1);
+  --color-primary-text: #000000;
+  
+  --color-text: #ededed; 
+  --color-text-muted: #888888; 
+  --color-success: #10b981; 
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  /* Shadows are subtle or removed for flat modernism */
+  --shadow-sm: none;
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.8);
+  
+  /* Radii - Sharp edges for architect look */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 9999px;
+  
+  /* Spacing */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+
+  /* Transitions - Slower and more fluid for a premium feel */
+  --transition-smooth: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-content-active {
+  animation: fadeInSlideUp var(--transition-smooth);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-base);
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.02em;
+}
+
+/* Layout */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.main-content {
+  flex: 1;
+  padding: var(--spacing-8) var(--spacing-10);
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow-y: auto;
+}
+
+/* Typography */
+h1 { font-size: 24px; font-weight: 300; color: var(--color-text); margin-bottom: var(--spacing-2); text-transform: uppercase; letter-spacing: 0.05em; }
+h2 { font-size: 16px; font-weight: 400; color: var(--color-text); margin-bottom: var(--spacing-4); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--color-border); padding-bottom: 8px;}
+h3 { font-size: 14px; font-weight: 400; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-2); }
+p { color: var(--color-text-muted); font-size: 14px; }
+
+/* Components */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: #3a3a3a;
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+.metric-value {
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+.metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Forms & Inputs */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+}
+
+label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+input, select {
+  background-color: var(--color-base);
+  color: var(--color-text);
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 14px;
+  transition: all var(--transition-smooth);
+  width: 100%;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+/* Remove arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Specific Input Overrides for tables */
+.input-table {
+  padding: var(--spacing-1) var(--spacing-2);
+  width: 70px;
+  text-align: right;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  background-color: transparent;
+}
+.input-table:focus {
+  border-bottom: 1px solid var(--color-primary);
+  box-shadow: none;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3) var(--spacing-5);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  border: none;
+  gap: var(--spacing-2);
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+}
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+.btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--color-text-muted);
+  transform: translateY(-1px);
+}
+
+.sidebar .btn {
+  justify-content: flex-start;
+  padding: var(--spacing-4);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  transition: all var(--transition-smooth); /* Enforce flow for ALL sidebar buttons */
+}
+.sidebar .btn-outline {
+  border: none;
+  border-left: 2px solid transparent;
+}
+.sidebar .btn-outline:hover, 
+.sidebar .btn-primary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-primary);
+  transform: translateX(8px) scale(1.05); /* Increased values */
+}
+.sidebar .btn-primary {
+  background-color: transparent;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 600;
+  border-left: 2px solid var(--color-primary);
+}
+
+/* Tables */
+.table-container {
+  overflow-x: auto;
+  position: relative;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th, td {
+  padding: var(--spacing-3) var(--spacing-4);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+th {
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.td-number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Sticky Column for Planning Table */
+.sticky-col {
+  position: sticky !important;
+  left: 0;
+  z-index: 10;
+  background-color: var(--color-surface) !important;
+  border-right: 2px solid var(--color-border) !important;
+}
+
+thead .sticky-col {
+  z-index: 20;
+}
+
+/* Utilities */
+.flex-row { display: flex; align-items: center; gap: var(--spacing-4); }
+.flex-col { display: flex; flex-direction: column; gap: var(--spacing-4); }
+.gap-4 { gap: var(--spacing-4); }
+.gap-6 { gap: var(--spacing-6); }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.mt-4 { margin-top: var(--spacing-4); }
+.mt-8 { margin-top: var(--spacing-8); }
+.mb-4 { margin-bottom: var(--spacing-4); }
+.w-full { width: 100%; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-6); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-6); }
+
+.tabs {
+  display: flex;
+  gap: var(--spacing-6);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--spacing-8);
+}
+
+/* Animations */
+@keyframes pulse-save {
+  0% { transform: scale(0.96); }
+  50% { transform: scale(1); }
+  100% { transform: scale(0.96); }
+}
+
+.pulse-save {
+  animation: pulse-save 1.5s infinite ease-in-out;
+  transform-origin: right center;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-8);
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.tab {
+  padding: var(--spacing-3) 0;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 13px;
+  transition: all var(--transition-smooth); /* Tab-Flow */
+}
+
+.tab:hover {
+  color: var(--color-text);
+  border-bottom-color: var(--color-border); /* Subtle underline on hover */
+}
+
+.tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  transition: all var(--transition-smooth);
+}
+
+.chart-container {
+  height: 350px;
+  width: 100%;
+}
+/* Lock & Unlock Modal Styles */
+.lock-status-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  margin-top: auto;
+  border-top: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  color: var(--color-text-muted);
+}
+.lock-status-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-primary);
+}
+.lock-status-btn.unlocked {
+  color: var(--color-success);
+}
+
+.unlock-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(15px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.unlock-modal {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-12);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.8);
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.unlock-icon {
+  font-size: 48px;
+  margin-bottom: var(--spacing-4);
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+.unlock-input {
+  background: var(--color-base) !important;
+  font-size: 24px !important;
+  text-align: center !important;
+  letter-spacing: 0.3em !important;
+  padding: var(--spacing-6) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.unlock-input:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 1px var(--color-primary) !important;
+}
+
+.unlock-error {
+  color: #ef4444;
+  font-size: 13px;
+  height: 20px;
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Locked input styling */
+input:disabled, select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: rgba(255,255,255,0.02) !important;
+  border-color: rgba(255,255,255,0.05) !important;
+}
+</style>
+  
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  
+  <!-- Babel for parsing JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Chart.js for visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- PDF Export Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div id="root">Lade App...</div>
+<script type="text/babel">
+const { useState, useEffect, useMemo, useRef } = React;
+
+// --- INITIAL DATA & CONSTANTS ---
+const HOAI_PHASES = [
+  { id: 'LP1', name: 'Grundlagenermittlung', defaultShare: 2 },
+  { id: 'LP2', name: 'Vorplanung', defaultShare: 7 },
+  { id: 'LP3', name: 'Entwurfsplanung', defaultShare: 15 },
+  { id: 'LP4', name: 'Genehmigungsplanung', defaultShare: 3 },
+  { id: 'LP5', name: 'Ausführungsplanung', defaultShare: 25 },
+  { id: 'LP6', name: 'Vorbereitung Vergabe', defaultShare: 10 },
+  { id: 'LP7', name: 'Mitwirkung Vergabe', defaultShare: 4 },
+  { id: 'LP8', name: 'Objektüberwachung', defaultShare: 32 },
+  { id: 'LP9', name: 'Objektbetreuung', defaultShare: 2 },
+];
+
+const HOAI_LEISTUNGSBILDER = {
+  freianlagen: { label: "Freianlagen", color: "#4ade80", phases: [{id:"LP1",name:"Grundlagenermittlung",defaultShare:3},{id:"LP2",name:"Vorplanung",defaultShare:10},{id:"LP3",name:"Entwurfsplanung",defaultShare:16},{id:"LP4",name:"Genehmigungsplanung",defaultShare:4},{id:"LP5",name:"Ausführungsplanung",defaultShare:25},{id:"LP6",name:"Vorbereitung Vergabe",defaultShare:7},{id:"LP7",name:"Mitwirkung Vergabe",defaultShare:3},{id:"LP8",name:"Objektüberwachung",defaultShare:30},{id:"LP9",name:"Objektbetreuung",defaultShare:2}] },
+  tragwerksplanung: { label: "Tragwerksplanung", color: "#f59e0b", phases: [{id:"LP1",name:"Grundlagenermittlung",defaultShare:3},{id:"LP2",name:"Vorplanung",defaultShare:10},{id:"LP3",name:"Entwurfsplanung",defaultShare:15},{id:"LP4",name:"Genehmigungsplanung",defaultShare:0},{id:"LP5",name:"Ausführungsplanung",defaultShare:30},{id:"LP6",name:"Vorbereitung Vergabe",defaultShare:10},{id:"LP7",name:"Mitwirkung Vergabe",defaultShare:5},{id:"LP8",name:"Objektüberwachung",defaultShare:25},{id:"LP9",name:"Objektbetreuung",defaultShare:2}] },
+  technischeAusruestung: { label: "Technische Ausrüstung", color: "#38bdf8", phases: [{id:"LP1",name:"Grundlagenermittlung",defaultShare:2},{id:"LP2",name:"Vorplanung",defaultShare:9},{id:"LP3",name:"Entwurfsplanung",defaultShare:17},{id:"LP4",name:"Genehmigungsplanung",defaultShare:2},{id:"LP5",name:"Ausführungsplanung",defaultShare:22},{id:"LP6",name:"Vorbereitung Vergabe",defaultShare:7},{id:"LP7",name:"Mitwirkung Vergabe",defaultShare:5},{id:"LP8",name:"Objektüberwachung",defaultShare:34},{id:"LP9",name:"Objektbetreuung",defaultShare:2}] },
+  innenraeume: { label: "Innenräume", color: "#c084fc", phases: [{id:"LP1",name:"Grundlagenermittlung",defaultShare:3},{id:"LP2",name:"Vorplanung",defaultShare:7},{id:"LP3",name:"Entwurfsplanung",defaultShare:15},{id:"LP4",name:"Genehmigungsplanung",defaultShare:3},{id:"LP5",name:"Ausführungsplanung",defaultShare:25},{id:"LP6",name:"Vorbereitung Vergabe",defaultShare:10},{id:"LP7",name:"Mitwirkung Vergabe",defaultShare:4},{id:"LP8",name:"Objektüberwachung",defaultShare:31},{id:"LP9",name:"Objektbetreuung",defaultShare:2}] },
+  staedtebaulichePlanung: { label: "Städtebauliche Planung", color: "#fb923c", phases: [{id:"LP1",name:"Grundlagenermittlung",defaultShare:3},{id:"LP2",name:"Vorplanung",defaultShare:10},{id:"LP3",name:"Entwurfsplanung",defaultShare:15},{id:"LP4",name:"Genehmigungsplanung",defaultShare:5},{id:"LP5",name:"Ausführungsplanung",defaultShare:30},{id:"LP6",name:"Vorbereitung Vergabe",defaultShare:12},{id:"LP7",name:"Mitwirkung Vergabe",defaultShare:5},{id:"LP8",name:"Objektüberwachung",defaultShare:18},{id:"LP9",name:"Objektbetreuung",defaultShare:2}] },
+};
+
+const MONTH_NAMES = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+
+const formatCurrency = (val) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val);
+
+// Helper for dynamic month labels
+const getMonthLabel = (index, startMonth, startYear) => {
+  const m = (startMonth + index) % 12;
+  const y = startYear + Math.floor((startMonth + index) / 12);
+  return `${MONTH_NAMES[m]} ${y}`;
+};
+
+const getISOWeek = (date) => {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+  const yearStart = new Date(d.getFullYear(), 0, 1);
+  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return weekNo;
+};
+
+// --- HELPER COMPONENT: Chart.js React Wrapper ---
+function BarChart({ data, title }) {
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
+
+  useEffect(() => {
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+    const ctx = chartRef.current.getContext('2d');
+    chartInstance.current = new Chart(ctx, {
+      type: 'bar',
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top', labels: { color: '#ededed', font: { family: 'Inter', size: 11 } } },
+          title: { display: !!title, text: title, color: '#ededed' },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                let label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                if (context.parsed.y !== null) {
+                  label += new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(context.parsed.y);
+                }
+                return label;
+              }
+            }
+          }
+        },
+        scales: {
+          x: { stacked: true, ticks: { color: '#888888', font: { family: 'Inter', size: 10 } }, grid: { display: false, color: '#2a2a2a' } },
+          y: { stacked: true, beginAtZero: true, ticks: { color: '#888888', font: { family: 'Inter', size: 10 } }, grid: { color: '#2a2a2a' } }
+        }
+      }
+    });
+
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+      }
+    };
+  }, [data, title]);
+
+  return (
+    <div className="chart-container">
+      <canvas ref={chartRef}></canvas>
+    </div>
+  );
+}
+
+// --- MAIN APP COMPONENT ---
+function App() {
+  // State: Project Data
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [selectedPhaseId, setSelectedPhaseId] = useState(null);
+  const [budgetInputFocused, setBudgetInputFocused] = useState(false);
+  const [focusedABId, setFocusedABId] = useState(null);
+  const [focusedPhaseId, setFocusedPhaseId] = useState(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const [showSaveConfirm, setShowSaveConfirm] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
+  const planningScrollRef = useRef(null);
+  const [draggedPhaseId, setDraggedPhaseId] = useState(null);
+  const [dragOverPhaseId, setDragOverPhaseId] = useState(null);
+  const [ganttZoom, setGanttZoom] = useState('month'); // 'month' | 'day'
+  const [isLocked, setIsLocked] = useState(true);
+  const [showUnlockModal, setShowUnlockModal] = useState(false);
+  const [unlockPassword, setUnlockPassword] = useState('');
+  const [unlockError, setUnlockError] = useState(false);
+  const [showAddLeistungsbildModal, setShowAddLeistungsbildModal] = useState(false);
+  const [selectedLeistungsbild, setSelectedLeistungsbild] = useState("freianlagen");
+  const [showThirdMonday, setShowThirdMonday] = useState(true);
+
+  const handleUnlock = (e) => {
+    if (e) e.preventDefault();
+    if (unlockPassword.trim() === (project.password || "1234").trim()) {
+      setIsLocked(false);
+      setShowUnlockModal(false);
+      setUnlockPassword('');
+      setUnlockError(false);
+    } else {
+      setUnlockError(true);
+      setTimeout(() => setUnlockError(false), 500);
+    }
+  };
+
+  const handleDragStart = (e, id) => {
+    if (isLocked) return;
+    setDraggedPhaseId(id);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e, id) => {
+    e.preventDefault();
+    if (dragOverPhaseId !== id) {
+      setDragOverPhaseId(id);
+    }
+  };
+
+  const handleDrop = (e, targetId) => {
+    e.preventDefault();
+    if (draggedPhaseId && draggedPhaseId !== targetId) {
+      pushToHistory();
+      setProject(prev => {
+        setIsDirty(true);
+        const newPhases = [...prev.phases];
+        const sourceIndex = newPhases.findIndex(p => p.id === draggedPhaseId);
+        const targetIndex = newPhases.findIndex(p => p.id === targetId);
+        
+        if (sourceIndex > -1 && targetIndex > -1) {
+            const [movedItem] = newPhases.splice(sourceIndex, 1);
+            newPhases.splice(targetIndex, 0, movedItem);
+        }
+        logActivity("Leistungsphasen neu geordnet");
+        markChange('phases');
+        return { ...prev, phases: newPhases };
+      });
+    }
+    setDraggedPhaseId(null);
+    setDragOverPhaseId(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedPhaseId(null);
+    setDragOverPhaseId(null);
+  };
+
+  const [project, setProject] = useState(() => {
+    const saved = localStorage.getItem('hoai_project');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        
+        // Guarantee critical root fields
+        if (parsed.startMonth === undefined) parsed.startMonth = 0;
+        if (parsed.startYear === undefined) parsed.startYear = new Date().getFullYear();
+        if (parsed.numMonths === undefined) parsed.numMonths = parsed.months ? parsed.months.length : 12;
+        
+        // Cap numMonths to prevent memory issues (max 100 years)
+        parsed.numMonths = Math.max(1, Math.min(Number(parsed.numMonths) || 12, 1200));
+        
+        // Cap overallBudget to prevent numerical overflow issues
+        parsed.overallBudget = Math.max(0, Math.min(Number(parsed.overallBudget) || 100000, 1000000000000)); // Max 1 Trillion
+
+        if (!parsed.phases) parsed.phases = [];
+        if (!parsed.activities) parsed.activities = [];
+        if (!parsed.additionalBudgets) parsed.additionalBudgets = [];
+        if (parsed.sideCostsPercent === undefined || parsed.sideCostsPercent === 5) parsed.sideCostsPercent = 6;
+
+        // Migration from string months to numeric indices
+        if (parsed.months) {
+          parsed.phases = parsed.phases.map(p => {
+            const newMonthlyProgress = {};
+            const oldMonths = parsed.months || ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+            oldMonths.forEach((mName, idx) => {
+              if (p.monthlyProgress && p.monthlyProgress[mName] !== undefined) {
+                newMonthlyProgress[idx] = p.monthlyProgress[mName];
+              } else {
+                newMonthlyProgress[idx] = 0;
+              }
+            });
+            const customShare = p.customShare !== undefined ? p.customShare 
+                  : (parsed.overallBudget && p.budget ? (p.budget / parsed.overallBudget)*100 : p.defaultShare);
+            return { ...p, monthlyProgress: newMonthlyProgress, customShare };
+          });
+          delete parsed.months;
+        }
+
+        // Migration: Ensure dependencies are objects and colors exist
+        parsed.phases = parsed.phases.map(p => ({
+          ...p,
+          color: p.color || (p.isEvent ? '#888888' : '#cccccc'),
+          customShare: p.customShare !== undefined ? p.customShare : p.defaultShare,
+          monthlyProgress: p.monthlyProgress || {},
+          dependencies: (p.dependencies || []).map(d => 
+            typeof d === 'string' ? { targetId: d, type: 'FS', offset: 0 } : d
+          )
+        }));
+
+        // Guarantee additionalBudgets structure
+        parsed.additionalBudgets = parsed.additionalBudgets.map(ab => ({
+          ...ab,
+          phases: (ab.phases || []).map(ph => ({
+            ...ph,
+            customShare: ph.customShare !== undefined ? ph.customShare : ph.defaultShare,
+            monthlyProgress: ph.monthlyProgress || {}
+          }))
+        }));
+
+        return parsed;
+      } catch (e) {
+        console.error("Failed to parse saved project:", e);
+      }
+    }
+    const initialPhases = HOAI_PHASES.map(phase => ({
+      ...phase,
+      customShare: phase.defaultShare,
+      budget: phase.defaultShare * 1000, 
+      progressType: 'cumulative',
+      monthlyProgress: Array.from({ length: 12 }).reduce((acc, _, i) => ({ ...acc, [i]: 0 }), {})
+    }));
+
+    return {
+      name: 'Neues Bauprojekt',
+      projectNumber: '0000',
+      overallBudget: 100000,
+      sideCostsPercent: 6,
+      numMonths: 12,
+      startMonth: 0,
+      startYear: new Date().getFullYear(),
+      autoProgress: false,
+      password: '1234',
+      phases: initialPhases.map((p, idx) => ({
+         ...p,
+         startMonthIdx: idx,
+         duration: 2,
+         isEvent: false,
+         dependencies: []
+      })),
+      activities: [],
+      additionalBudgets: [],
+      manualInvoices: {}
+    };
+  });
+
+  const getDeviceLabel = () => {
+    const ua = navigator.userAgent;
+    let os = "Unbekanntes OS";
+    if (ua.indexOf("Win") !== -1) os = "Windows";
+    if (ua.indexOf("Mac") !== -1) os = "macOS";
+    if (ua.indexOf("Linux") !== -1) os = "Linux";
+    if (ua.indexOf("Android") !== -1) os = "Android";
+    if (ua.indexOf("like Mac") !== -1) os = "iOS";
+
+    let browser = "Browser";
+    if (ua.indexOf("Chrome") !== -1) browser = "Chrome";
+    else if (ua.indexOf("Safari") !== -1) browser = "Safari";
+    else if (ua.indexOf("Firefox") !== -1) browser = "Firefox";
+    else if (ua.indexOf("Edge") !== -1) browser = "Edge";
+
+    return `${os} (${browser})`;
+  };
+
+  const [sessionChanges, setSessionChanges] = useState(new Set());
+  const markChange = (cat) => setSessionChanges(prev => {
+    const next = new Set(prev);
+    next.add(cat);
+    return next;
+  });
+
+  const logActivity = (message) => {
+    setProject(prev => {
+      const newActivity = {
+        id: Date.now(),
+        timestamp: new Date().toLocaleString('de-DE', { 
+           day: '2-digit', month: '2-digit', year: 'numeric', 
+           hour: '2-digit', minute: '2-digit' 
+        }),
+        description: message,
+        device: getDeviceLabel()
+      };
+      // Keep only last 100
+      const newActivities = [newActivity, ...(prev.activities || [])].slice(0, 100);
+      return { ...prev, activities: newActivities };
+    });
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      // If no phase is selected, do nothing
+      if (!selectedPhaseId) return;
+
+      // Close if click is outside any gantt-bar or the popover itself
+      const isBar = e.target.closest('.gantt-bar-container');
+      const isPopover = e.target.closest('.edit-popover');
+      
+      if (!isBar && !isPopover) {
+        setSelectedPhaseId(null);
+      }
+    };
+
+    const handleFocusIn = (e) => {
+      if (e.target && e.target.tagName === 'INPUT') {
+        const type = e.target.type;
+        // Only select text for types that support it
+        if (type === 'text' || type === 'number') {
+           setTimeout(() => {
+              try {
+                e.target.select();
+              } catch (err) {}
+           }, 0);
+        }
+      }
+    };
+
+    window.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('focusin', handleFocusIn);
+    
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('focusin', handleFocusIn);
+    };
+  }, [selectedPhaseId]);
+
+  // --- UNIVERSAL DATE HELPERS ---
+
+  const getISOFromIdx = (idx, isEnd = false) => {
+    const startM = Number(project?.startMonth) || 0;
+    const startY = Number(project?.startYear) || 2024;
+    const safeIdx = isNaN(idx) ? 0 : Number(idx);
+    
+    const totalMonths = startM + safeIdx;
+    const y = startY + Math.floor(totalMonths / 12);
+    const m = (totalMonths % 12) + 1;
+    
+    // Safety check for invalid dates
+    if (isNaN(y) || isNaN(m)) return "2024-01-01";
+    
+    const d = isEnd ? new Date(y, m, 0).getDate() : 1; 
+    return `${y}-${m.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
+  };
+
+  const addWorkingDays = (iso, days) => {
+    if (!iso || iso.includes('NaN')) return iso;
+    const safeDays = Number(days) || 0;
+    if (safeDays === 0) return iso;
+    const date = new Date(iso);
+    if (isNaN(date.getTime())) return iso;
+    
+    let moved = 0;
+    const direction = safeDays > 0 ? 1 : -1;
+    const target = Math.min(Math.abs(safeDays), 10000); // Cap at ~27 years
+    let loopLimit = 0;
+    while (moved < target && loopLimit < 30000) {
+      date.setDate(date.getDate() + direction);
+      if (date.getDay() !== 0 && date.getDay() !== 6) moved++;
+      loopLimit++;
+    }
+    try {
+      return date.toISOString().split('T')[0];
+    } catch (e) {
+      return iso;
+    }
+  };
+
+  const calculateSuccessorStart = (predecessor, link, successorDuration) => {
+    const pStart = predecessor.startDate || getISOFromIdx(predecessor.startMonthIdx);
+    const pEnd = predecessor.endDate || getISOFromIdx(predecessor.startMonthIdx, true);
+    const offset = Number(link.offset || 0);
+
+    switch(link.type) {
+      case 'SS': return addWorkingDays(pStart, offset);
+      case 'FF': {
+         const targetEnd = addWorkingDays(pEnd, offset);
+         return addWorkingDays(targetEnd, -(successorDuration - 1));
+      }
+      case 'SF': {
+         const targetEndSF = addWorkingDays(pStart, offset);
+         return addWorkingDays(targetEndSF, -(successorDuration - 1));
+      }
+      case 'FS':
+      default: return addWorkingDays(pEnd, 1 + offset);
+    }
+  };
+
+  const getDurationDays = (start, end) => {
+    const s = new Date(start);
+    const e = new Date(end);
+    if (isNaN(s.getTime()) || isNaN(e.getTime())) return 1;
+    
+    // Count inclusive working days
+    const direction = s <= e ? 1 : -1;
+    let current = new Date(s);
+    let count = 0;
+    let loopLimit = 0;
+    
+    while (((direction > 0 && current <= e) || (direction < 0 && current >= e)) && loopLimit < 30000) {
+      if (current.getDay() !== 0 && current.getDay() !== 6) {
+        count++;
+      }
+      current.setDate(current.getDate() + direction);
+      loopLimit++;
+    }
+    return Math.max(1, count);
+  };
+
+  const cascadeDates = (updatedPhases, sourceId, projectStartYear, projectStartMonth) => {
+    const queue = [sourceId];
+    const visited = new Set();
+    
+    while (queue.length > 0) {
+      const currentId = queue.shift();
+      if (visited.has(currentId)) continue;
+      visited.add(currentId);
+
+      const currentPhase = updatedPhases.find(p => p.id === currentId);
+      if (!currentPhase) continue;
+
+      updatedPhases.forEach((successor, sIdx) => {
+        const linksToCurrent = (successor.dependencies || []).filter(d => d.targetId === currentId);
+        
+        linksToCurrent.forEach(link => {
+          const sStart = successor.startDate || getISOFromIdx(successor.startMonthIdx);
+          const sEnd = successor.endDate || getISOFromIdx(successor.startMonthIdx, true);
+          const sDuration = getDurationDays(sStart, sEnd);
+
+          const newSStart = calculateSuccessorStart(currentPhase, link, sDuration);
+          const newSEnd = addWorkingDays(newSStart, sDuration - 1);
+
+          if (newSStart !== sStart || newSEnd !== sEnd) {
+            updatedPhases[sIdx].startDate = newSStart;
+            updatedPhases[sIdx].endDate = newSEnd;
+            
+            if (newSStart && newSStart.includes('-')) {
+              const [sy, sm] = newSStart.split('-').map(Number);
+              updatedPhases[sIdx].startMonthIdx = (sy - (projectStartYear || 2024)) * 12 + (sm - 1) - (projectStartMonth || 0);
+            }
+            
+            updatedPhases[sIdx].duration = Math.max(1, (new Date(newSEnd).getMonth() + new Date(newSEnd).getFullYear()*12) - (new Date(newSStart).getMonth() + new Date(newSStart).getFullYear()*12) + 1);
+            queue.push(successor.id);
+          }
+        });
+      });
+    }
+    return updatedPhases;
+  };
+
+  const getThirdMonday = (idx) => {
+    const startM = Number(project?.startMonth) || 0;
+    const startY = Number(project?.startYear) || 2024;
+    const safeIdx = isNaN(idx) ? 0 : Number(idx);
+    
+    const m = (startM + safeIdx) % 12;
+    const y = startY + Math.floor((startM + safeIdx) / 12);
+    
+    // Safety check
+    if (isNaN(y) || isNaN(m)) return "";
+
+    const d = new Date(y, m, 1);
+    if (isNaN(d.getTime())) return "";
+
+    let limit = 0;
+    while (d.getDay() !== 1 && limit < 31) {
+      d.setDate(d.getDate() + 1);
+      limit++;
+    }
+    d.setDate(d.getDate() + 14);
+    
+    try {
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    } catch (e) {
+      return '';
+    }
+  };
+
+  const calculateAutoProgress = (p, monthIdx) => {
+    const startISO = p.startDate || getISOFromIdx(p.startMonthIdx);
+    const endISO = p.endDate || getISOFromIdx(p.startMonthIdx, true);
+    const refISO = getThirdMonday(monthIdx);
+
+    const start = new Date(startISO).getTime();
+    const end = new Date(endISO).getTime();
+    const ref = new Date(refISO).getTime();
+
+    if (isNaN(start) || isNaN(end) || isNaN(ref)) return 0;
+    if (ref < start) return 0;
+    if (ref >= end) return 100;
+
+    const total = end - start;
+    if (total <= 0) return 100;
+    const passed = ref - start;
+    return Math.max(0, Math.min(100, Math.round((passed / total) * 100)));
+  };
+
+  const getPosFromISO = (iso) => {
+    if (!iso || !iso.includes('-')) return 0;
+    const parts = iso.split('-');
+    if (parts.length < 3) return 0;
+    const [y, m, d] = parts.map(Number);
+    const day = isNaN(d) ? 1 : d;
+    
+    if (ganttZoom === 'month') {
+      const mIdx = (y - (project.startYear || 2024)) * 12 + (m - 1) - (project.startMonth || 0);
+      return (mIdx * 80) + ((day - 1) * (80/30));
+    } else {
+      const startD = new Date(project.startYear, project.startMonth, 1);
+      const targetD = new Date(y, m - 1, d);
+      const diffDays = Math.round((targetD - startD) / (1000 * 60 * 60 * 24));
+      return diffDays * 24; // 24px per day
+    }
+  };
+  
+  const formatDateDE = (iso) => {
+    if (!iso || iso.includes('NaN')) return '';
+    const parts = iso.split('-');
+    if (parts.length < 3) return '';
+    const [y, m, d] = parts;
+    return `${d}.${m}.${y.substring(2)}`;
+  };
+
+  const activeIndices = Array.from({ length: project.numMonths || 12 }, (_, i) => i);
+
+  // Calculate total values derived from state
+  const calculations = useMemo(() => {
+    let totalBudget = 0;
+    let monthlyCashflowData = activeIndices.reduce((acc, i) => ({ ...acc, [i]: 0 }), {});
+    let monthlySideCostsData = activeIndices.reduce((acc, i) => ({ ...acc, [i]: 0 }), {});
+
+    project.phases.forEach(phase => {
+      if (phase.isEvent) return; // Skip non-budget items
+
+      const pCustom = phase.customShare !== undefined ? phase.customShare : phase.defaultShare;
+      
+      // Calculate phase budget: Fixed amount if feeType is 'fixed', otherwise percentage of overall budget
+      const phaseBudget = phase.feeType === 'fixed' 
+        ? (Number(phase.fixedAmount) || 0) 
+        : (project.overallBudget * pCustom) / 100;
+
+      totalBudget += phaseBudget;
+      
+      let previousCumulative = 0;
+
+      activeIndices.forEach(idx => {
+        let val = Number(phase.monthlyProgress[idx]) || 0;
+        
+        // AUTO-CALC OVERRIDE
+        if (project.autoProgress) {
+          val = calculateAutoProgress(phase, idx);
+        }
+
+        let percentThisMonth = 0;
+
+        if (phase.progressType === 'cumulative' || project.autoProgress) {
+          percentThisMonth = Math.max(0, val - previousCumulative);
+          previousCumulative = Math.max(previousCumulative, val);
+        } else {
+          percentThisMonth = val;
+        }
+
+        const netAmount = (phaseBudget * percentThisMonth) / 100;
+        monthlyCashflowData[idx] += netAmount;
+        monthlySideCostsData[idx] += netAmount * (project.sideCostsPercent / 100);
+      });
+    });
+
+    // Include additionalBudgets in cashflow calculations
+    (project.additionalBudgets || []).forEach(ab => {
+      (ab.phases || []).forEach(phase => {
+        if (phase.isEvent) return;
+        const pCustom = phase.customShare !== undefined ? phase.customShare : phase.defaultShare;
+        const phaseBudget = (ab.overallBudget * pCustom) / 100;
+        totalBudget += phaseBudget;
+        let previousCumulative2 = 0;
+        activeIndices.forEach(idx => {
+          const val = Number((phase.monthlyProgress || {})[idx]) || 0;
+          const percentThisMonth = Math.max(0, val - previousCumulative2);
+          previousCumulative2 = Math.max(previousCumulative2, val);
+          const netAmount = (phaseBudget * percentThisMonth) / 100;
+          monthlyCashflowData[idx] += netAmount;
+          monthlySideCostsData[idx] += netAmount * (project.sideCostsPercent / 100);
+        });
+      });
+    });
+
+    const totalSideCosts = totalBudget * (project.sideCostsPercent / 100);
+    const totalGross = totalBudget + totalSideCosts;
+
+    // --- MANUAL INVOICE LOGIC (With Carryover) ---
+    let invoiceData = {};
+    let currentCarryOver = 0;
+    const lastMonthIdx = project.numMonths - 1;
+
+    activeIndices.forEach(idx => {
+       const calculatedMonthTotal = (monthlyCashflowData[idx] || 0) + (monthlySideCostsData[idx] || 0);
+       const availableToInvoice = calculatedMonthTotal + currentCarryOver;
+       
+       // Ghost Value Logic: Round down to 5000, or available if < 5000
+       // LAST MONTH: always take everything
+       let ghostVal = 0;
+       if (idx === lastMonthIdx) {
+          ghostVal = availableToInvoice;
+       } else {
+          ghostVal = availableToInvoice >= 5000 ? Math.floor(availableToInvoice / 5000) * 5000 : availableToInvoice;
+       }
+
+       const manualVal = project.manualInvoices[idx];
+       const finalInvoiced = (manualVal !== undefined && manualVal !== null && manualVal !== '') ? Number(manualVal) : ghostVal;
+       
+       const isWarning = finalInvoiced > (availableToInvoice + 0.01); // 0.01 buffer for float precision
+       const prevCarryOver = currentCarryOver;
+       currentCarryOver = availableToInvoice - finalInvoiced;
+
+       invoiceData[idx] = {
+          calculatedMonthTotal,
+          availableToInvoice,
+          ghostVal,
+          finalInvoiced,
+          isWarning,
+          isManual: manualVal !== undefined && manualVal !== null && manualVal !== '',
+          carryOverFromPrev: prevCarryOver,
+          carryOverToNext: currentCarryOver
+       };
+    });
+
+    return { totalBudget, totalSideCosts, totalGross, monthlyCashflowData, monthlySideCostsData, invoiceData };
+  }, [project, activeIndices]);
+
+  // Handle Manual Save
+  const handleSave = () => {
+    setShowSaveConfirm(true);
+  };
+
+  const confirmSave = () => {
+    const now = new Date();
+    const timestampStr = now.toLocaleString('de-DE', { 
+      day: '2-digit', month: '2-digit', year: 'numeric', 
+      hour: '2-digit', minute: '2-digit' 
+    });
+    
+    // Synthesize messages from sessionChanges
+    const messages = [];
+    if (sessionChanges.has('name')) messages.push(`Projektname auf '${project.name}' aktualisiert`);
+    if (sessionChanges.has('projectNumber')) messages.push(`Projektnummer auf '${project.projectNumber}' geändert`);
+    if (sessionChanges.has('sideCosts')) messages.push(`Nebenkosten auf ${project.sideCostsPercent}% angepasst`);
+    if (sessionChanges.has('budget')) messages.push(`Gesamtbudget auf ${formatCurrency(project.overallBudget)} angepasst`);
+    if (sessionChanges.has('phases')) messages.push(`Projektstruktur oder Phasenordnung angepasst`);
+    if (sessionChanges.has('timeframe')) messages.push(`Projektzeitplan (Start/Dauer) geändert`);
+    if (sessionChanges.has('password')) messages.push(`Sicherheitspasswort aktualisiert`);
+    if (sessionChanges.size === 0) messages.push("Projektstand manuell gespeichert");
+    else messages.push("Projektstand dauerhaft gespeichert (inkl. obiger Änderungen)");
+
+    const device = getDeviceLabel();
+    const newLogEntries = messages.reverse().map((msg, i) => ({
+      id: Date.now() + i,
+      timestamp: timestampStr,
+      description: msg,
+      device
+    }));
+
+    const updatedProject = { 
+      ...project, 
+      lastSaved: timestampStr,
+      activities: [...newLogEntries, ...(project.activities || [])].slice(0, 100)
+    };
+    
+    setProject(updatedProject);
+    localStorage.setItem('hoai_project', JSON.stringify(updatedProject));
+    
+    setSessionChanges(new Set());
+    setIsDirty(false);
+    setHistory([]); 
+    setShowSaveConfirm(false);
+  };
+
+  useEffect(() => {
+    if (activeTab === 'progress' && planningScrollRef.current) {
+      setTimeout(() => {
+        if (!planningScrollRef.current) return;
+        
+        const now = new Date();
+        const curY = now.getFullYear();
+        const curM = now.getMonth();
+        
+        const sM = Number(project.startMonth) || 0;
+        const sY = Number(project.startYear) || 2024;
+        const total = project.numMonths || 12;
+        
+        let targetIdx = -1;
+        for (let i = 0; i < total; i++) {
+          const m = (sM + i) % 12;
+          const y = sY + Math.floor((sM + i) / 12);
+          if (m === curM && y === curY) {
+            targetIdx = i;
+            break;
+          }
+        }
+        
+        const container = planningScrollRef.current;
+        const containerWidth = container.offsetWidth;
+        const stickyWidth = 250;
+        const monthWidth = 220;
+        const visibleSpace = containerWidth - stickyWidth;
+        
+        // --- LOGIC: DATE OUT OF RANGE ---
+        if (targetIdx === -1) {
+           if (curY < sY || (curY === sY && curM < sM)) {
+             // Today is BEFORE project start -> Focus on month 0 (Sept 2026 in your case)
+             container.scrollTo({ left: 0, behavior: 'smooth' });
+             return;
+           } else {
+             // Today is AFTER project end -> Focus on last month
+             targetIdx = total - 1;
+           }
+        }
+
+        // --- CALCULATION: CENTER TARGET IDX IN VISIBLE SPACE ---
+        // monthCenter is relative to the START of the scrolling content (after sticky boundary)
+        const monthCenter = (targetIdx * monthWidth) + (monthWidth / 2);
+        const centerOffset = visibleSpace / 2;
+        const scrollTarget = monthCenter - centerOffset;
+        
+        container.scrollTo({
+          left: Math.max(0, scrollTarget),
+          behavior: 'smooth'
+        });
+      }, 250); 
+    }
+  }, [activeTab, project.startYear, project.startMonth, project.numMonths]);
+
+  const pushToHistory = () => {
+    // Save a deep copy of current state before applying new changes
+    setHistory(prev => [JSON.parse(JSON.stringify(project)), ...prev].slice(0, 20));
+    setRedoStack([]); // Clear redo stack on any new action
+  };
+
+  const handleUndo = () => {
+    if (history.length === 0) return;
+    const [lastState, ...remainingHistory] = history;
+    
+    // Save current to redo stack before undoing
+    setRedoStack(prev => [JSON.parse(JSON.stringify(project)), ...prev].slice(0, 20));
+    
+    setProject(lastState);
+    setHistory(remainingHistory);
+    setIsDirty(true);
+  };
+
+  const handleRedo = () => {
+    if (redoStack.length === 0) return;
+    const [nextState, ...remainingRedo] = redoStack;
+    
+    // Push current back to history
+    setHistory(prev => [JSON.parse(JSON.stringify(project)), ...prev].slice(0, 20));
+    
+    setProject(nextState);
+    setRedoStack(remainingRedo);
+    setIsDirty(true);
+  };
+
+  // Prevent accidental exit with unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = ''; // Required by modern browsers to show the confirm dialog
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isDirty]);
+
+  // Auto-scroll planning table to the right when adding months
+  useEffect(() => {
+    if (activeTab === 'planning' && planningScrollRef.current) {
+      planningScrollRef.current.scrollLeft = planningScrollRef.current.scrollWidth;
+    }
+  }, [project.numMonths, activeTab]);
+
+  const addMonth = () => {
+    pushToHistory();
+    setIsDirty(true);
+    setProject(prev => {
+      const count = prev.numMonths; // current index
+      return { ...prev, numMonths: count + 1 };
+    });
+  };
+
+  const removeLastMonth = () => {
+    pushToHistory();
+    setIsDirty(true);
+    setProject(prev => {
+      if (prev.numMonths <= 1) return prev; // keep at least 1 month
+      const targetIndex = prev.numMonths - 1;
+      const newPhases = prev.phases.map(p => {
+        const mp = { ...p.monthlyProgress };
+        delete mp[targetIndex];
+        return { ...p, monthlyProgress: mp };
+      });
+      return { ...prev, numMonths: prev.numMonths - 1, phases: newPhases };
+    });
+  };
+
+  const clearAllProgress = () => {
+    if (window.confirm("Möchtest du WIRKLICH alle eingetragenen Leistungsstände UND alle angelegten Monate unwiderruflich löschen?")) {
+      pushToHistory();
+      setIsDirty(true);
+      setProject(prev => ({
+        ...prev,
+        numMonths: 1, // Reset to 1 month
+        phases: prev.phases.map(p => ({
+          ...p,
+          monthlyProgress: {} // Completely clear progress to allow inheritance to start fresh
+        }))
+      }));
+    }
+  };
+
+  const updateNumMonths = (newNum) => {
+     let targetNum = Math.max(1, Number(newNum));
+     pushToHistory();
+     setIsDirty(true);
+     setProject(prev => ({ ...prev, numMonths: targetNum }));
+  };
+
+  const updatePhase = (phaseId, field, value) => {
+    pushToHistory();
+    setProject(prev => {
+      setIsDirty(true);
+      let updatedPhases = prev.phases.map(p => {
+        if (p.id !== phaseId) return p;
+        let newP = { ...p, [field]: value };
+        if (field === 'fixedAmount' && prev.overallBudget) {
+          newP.customShare = (Number(value) / prev.overallBudget) * 100;
+        }
+        if (field === 'feeType' && value === 'fixed' && prev.overallBudget) {
+          newP.customShare = (Number(p.fixedAmount || 0) / prev.overallBudget) * 100;
+        }
+        return newP;
+      });
+
+      // Special Trigger: Cascade if dependencies change
+      if (field === 'dependencies') {
+        const cascadeSourceId = value && value.length > 0 ? value[0].targetId : phaseId;
+        updatedPhases = cascadeDates(updatedPhases, cascadeSourceId, prev.startYear, prev.startMonth);
+      }
+
+      return { ...prev, phases: updatedPhases };
+    });
+  };
+
+  const addEvent = () => {
+    pushToHistory();
+    setIsDirty(true);
+    setProject(prev => {
+      const newEvent = {
+        id: 'TERM-' + Date.now(),
+        name: 'Neuer Termin',
+        defaultShare: 0,
+        customShare: 0,
+        isEvent: true,
+        progressType: 'cumulative',
+        monthlyProgress: {},
+        startMonthIdx: 0,
+        duration: 2,
+        dependencies: []
+      };
+      return { ...prev, phases: [ ...prev.phases, newEvent ] };
+    });
+  };
+
+  // --- Additional Leistungsbild Handlers ---
+  const addLeistungsbild = () => {
+    const def = HOAI_LEISTUNGSBILDER[selectedLeistungsbild];
+    if (!def) return;
+    pushToHistory();
+    const numMonths = project.numMonths || 12;
+    const newAb = {
+      id: selectedLeistungsbild + "_" + Date.now(),
+      leistungsbild: selectedLeistungsbild,
+      label: def.label,
+      color: def.color,
+      overallBudget: 50000,
+      phases: def.phases.map((ph, idx) => ({
+        ...ph,
+        customShare: ph.defaultShare,
+        startMonthIdx: idx,
+        duration: 2,
+        isEvent: false,
+        monthlyProgress: Array.from({ length: numMonths }).reduce((acc, _, i) => ({ ...acc, [i]: 0 }), {}),
+        progressType: "cumulative",
+        dependencies: [],
+        color: def.color
+      }))
+    };
+    setProject(prev => ({ ...prev, additionalBudgets: [...(prev.additionalBudgets || []), newAb] }));
+    setShowAddLeistungsbildModal(false);
+    setIsDirty(true);
+  };
+
+  const removeLeistungsbild = (abId) => {
+    pushToHistory();
+    setProject(prev => ({ ...prev, additionalBudgets: (prev.additionalBudgets || []).filter(ab => ab.id !== abId) }));
+    setIsDirty(true);
+  };
+
+  const updateLeistungsbildBudget = (abId, value) => {
+    setProject(prev => ({ ...prev, additionalBudgets: (prev.additionalBudgets || []).map(ab => ab.id === abId ? { ...ab, overallBudget: value } : ab) }));
+    setIsDirty(true);
+  };
+
+  const updateLeistungsbildLabel = (abId, value) => {
+    setProject(prev => ({ ...prev, additionalBudgets: (prev.additionalBudgets || []).map(ab => ab.id === abId ? { ...ab, label: value } : ab) }));
+    setIsDirty(true);
+  };
+
+  const updateLeistungsbildPhase = (abId, phaseId, field, value) => {
+    setProject(prev => ({ ...prev, additionalBudgets: (prev.additionalBudgets || []).map(ab => {
+      if (ab.id !== abId) return ab;
+      return { ...ab, phases: ab.phases.map(ph => {
+        if (ph.id !== phaseId) return ph;
+        let finalVal = value;
+        if (field === 'customShare') {
+          finalVal = Math.min(Number(value) || 0, ph.defaultShare);
+        }
+        return { ...ph, [field]: finalVal };
+      }) };
+    }) }));
+    setIsDirty(true);
+  };
+
+  const addPhase = () => {
+    pushToHistory();
+    setIsDirty(true);
+    setProject(prev => {
+      const newPhase = {
+        id: 'XXX',
+        name: 'Bezeichnung Leistung',
+        defaultShare: 0,
+        customShare: 0,
+        isCustom: true,
+        isEvent: false,
+        progressType: 'cumulative',
+        monthlyProgress: {}
+      };
+      const updated = { ...prev, phases: [ ...prev.phases, newPhase ] };
+      markChange('phases');
+      return updated;
+    });
+  };
+
+  const removePhase = (phaseId) => {
+    if (project.phases.length <= 1) return alert("Mindestens eine Phase muss vorhanden sein.");
+    if (!window.confirm(`Möchtest du die Phase "${phaseId}" wirklich permanent löschen? Alle Daten dazu gehen verloren.`)) return;
+    
+    pushToHistory();
+    setIsDirty(true);
+    setProject(prev => ({
+      ...prev,
+      phases: prev.phases.filter(p => p.id !== phaseId)
+    }));
+    markChange('phases');
+  };
+
+  const updatePhaseMonth = (phaseId, monthIdx, value, abId = null) => {
+    pushToHistory();
+    setProject(prev => {
+      setIsDirty(true);
+      if (abId) {
+        return {
+          ...prev,
+          additionalBudgets: prev.additionalBudgets.map(ab => {
+            if (ab.id !== abId) return ab;
+            return {
+              ...ab,
+              phases: ab.phases.map(p => {
+                if (p.id !== phaseId) return p;
+                let numValue = Number(value);
+                if (isNaN(numValue)) numValue = 0;
+                if (numValue > 100) numValue = 100;
+                if (numValue < 0) numValue = 0;
+                return { ...p, monthlyProgress: { ...p.monthlyProgress, [monthIdx]: numValue } };
+              })
+            };
+          })
+        };
+      }
+      return {
+        ...prev,
+        phases: prev.phases.map(p => {
+          if (p.id !== phaseId) return p;
+          let numValue = Number(value);
+          if (isNaN(numValue)) numValue = 0;
+          if (numValue > 100) numValue = 100;
+          if (numValue < 0) numValue = 0;
+          return { ...p, monthlyProgress: { ...p.monthlyProgress, [monthIdx]: numValue } };
+        })
+      };
+    });
+  };
+
+  const updateProjectField = (field, value) => {
+    pushToHistory();
+    setProject(prev => {
+      setIsDirty(true);
+      let next = { ...prev, [field]: value };
+      // Sync all fixed-fee percentages when overall budget changes
+      if (field === 'overallBudget' && value > 0) {
+        next.phases = prev.phases.map(p => {
+          if (p.feeType === 'fixed') {
+            return { ...p, customShare: (Number(p.fixedAmount || 0) / value) * 100 };
+          }
+          return p;
+        });
+      }
+      return next;
+    });
+  };
+
+  const updatePhaseSchedule = (id, field, value) => {
+    pushToHistory();
+    setProject(prev => {
+      setIsDirty(true);
+      const newPhases = prev.phases.map(p => {
+        if (p.id !== id) return p;
+        const newP = { ...p, [field]: value };
+        return newP;
+      });
+      // ... rest of the function stays same
+
+      // Auto-Expand Logic: If any phase end > numMonths, increase numMonths
+      let maxEnd = prev.numMonths || 12;
+      newPhases.forEach(p => {
+        const pEnd = (Number(p.startMonthIdx) || 0) + (Number(p.duration) || 1);
+        if (pEnd > maxEnd) maxEnd = pEnd;
+      });
+
+      return {
+        ...prev,
+        phases: newPhases,
+        numMonths: maxEnd
+      };
+    });
+  };
+
+  const updateManualInvoice = (idx, value) => {
+    setProject(prev => {
+      setIsDirty(true);
+      return {
+        ...prev,
+        manualInvoices: { ...prev.manualInvoices, [idx]: value === '' ? undefined : Number(value) }
+      };
+    });
+  };
+
+  const handleBlurMonth = (phase, monthIdx) => {
+    if (phase.progressType !== 'cumulative') return;
+    setProject(prev => {
+      setIsDirty(true);
+      return {
+        ...prev,
+        phases: prev.phases.map(p => {
+          if (p.id !== phase.id) return p;
+          // ... logic follows
+          let numValue = Number(p.monthlyProgress[monthIdx]) || 0;
+          let maxPrior = 0;
+          let newMonthlyProgress = { ...p.monthlyProgress };
+          for (let i = 0; i < monthIdx; i++) {
+             maxPrior = Math.max(maxPrior, newMonthlyProgress[i] || 0);
+          }
+          numValue = Math.max(numValue, maxPrior);
+          newMonthlyProgress[monthIdx] = numValue;
+          for (let i = monthIdx + 1; i < (prev.numMonths || 12); i++) {
+            const nextVal = newMonthlyProgress[i] || 0;
+            if (nextVal > 0 && nextVal < numValue) {
+               newMonthlyProgress[i] = numValue;
+            }
+          }
+          return { ...p, monthlyProgress: newMonthlyProgress };
+        })
+      };
+    });
+  };
+
+  const handleFocusMonth = (phase, monthIdx) => {
+    if (phase.progressType !== 'cumulative') return;
+    if (phase.monthlyProgress[monthIdx]) return; 
+
+    let maxPrior = 0;
+    for (let i = 0; i < monthIdx; i++) {
+       maxPrior = Math.max(maxPrior, phase.monthlyProgress[i] || 0);
+    }
+    
+    if (maxPrior > 0) {
+      updatePhaseMonth(phase.id, monthIdx, maxPrior);
+    }
+  };
+
+  // --- SUB-COMPONENTS ---
+  
+  const renderDashboard = () => {
+    const chartLabels = activeIndices.map(i => getMonthLabel(i, project.startMonth, project.startYear));
+
+    const chartData = {
+      labels: chartLabels,
+      datasets: [
+        {
+          label: 'Honorar (Netto)',
+          data: activeIndices.map(i => calculations.monthlyCashflowData[i] || 0),
+          backgroundColor: '#cccccc',
+          stack: 'performance',
+          order: 1
+        },
+        {
+          label: 'Nebenkosten',
+          data: activeIndices.map(i => calculations.monthlySideCostsData[i] || 0),
+          backgroundColor: '#888888',
+          stack: 'performance',
+          order: 1
+        },
+        {
+          label: 'Rechnung (Ist)',
+          data: activeIndices.map(i => calculations.invoiceData[i]?.finalInvoiced || 0),
+          backgroundColor: '#60a5fa',
+          stack: 'billing',
+          order: 2
+        },
+        {
+          label: 'Puffer',
+          data: activeIndices.map(i => calculations.invoiceData[i]?.carryOverToNext || 0),
+          backgroundColor: activeIndices.map(i => (calculations.invoiceData[i]?.carryOverToNext || 0) < -0.5 ? '#ef4444' : '#22c55e'),
+          stack: 'billing',
+          order: 2
+        }
+      ]
+    };
+
+    // Calculate Invoiced So Far
+    const currentDate = new Date();
+    const currentAbsoluteMonth = currentDate.getFullYear() * 12 + currentDate.getMonth();
+    
+    const todayISO = new Date().toISOString().split('T')[0];
+    
+    let invoicedSoFarNet = 0;
+    let cutoffDate = '';
+    activeIndices.forEach(idx => {
+       const thirdMondayISO = getThirdMonday(idx);
+       if (thirdMondayISO <= todayISO) {
+          invoicedSoFarNet += (calculations.invoiceData[idx]?.finalInvoiced || 0);
+          cutoffDate = thirdMondayISO;
+       }
+    });
+
+    return (
+      <div className="flex-col gap-6">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--spacing-6)' }}>
+          <div className="card metric-card">
+            <span className="metric-label">Geplantes Gesamthonorar</span>
+            <span className="metric-value">{formatCurrency(calculations.totalBudget)}</span>
+          </div>
+          <div className="card metric-card">
+            <span className="metric-label">Nebenkosten ({project.sideCostsPercent}%)</span>
+            <span className="metric-value">{formatCurrency(calculations.totalSideCosts)}</span>
+          </div>
+          <div className="card metric-card">
+            <span className="metric-label">Gesamtbetrag (inkl. Nebenkosten)</span>
+            <span className="metric-value" style={{ color: 'var(--color-success)' }}>
+              {formatCurrency(calculations.totalGross)}
+            </span>
+          </div>
+          <div className="card metric-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div className="flex-col">
+              <span className="metric-label">Bislang abgerechnet bis {cutoffDate ? formatDateDE(cutoffDate) : "-"}</span>
+              <span className="metric-value">{formatCurrency(invoicedSoFarNet)}</span>
+            </div>
+            
+            <div className="flex-col mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', gap: '4px' }}>
+              <div className="flex-row justify-between items-center">
+                <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontWeight: '700', textTransform: 'uppercase' }}>Restbetrag</span>
+                <span style={{ fontSize: '11px', fontWeight: '800', color: 'var(--color-success)' }}>
+                  {formatCurrency(Math.max(0, calculations.totalGross - invoicedSoFarNet))}
+                </span>
+              </div>
+              <div className="flex-row justify-between items-center">
+                <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', fontWeight: '700', textTransform: 'uppercase' }}>Endabrechnung bis</span>
+                <span style={{ fontSize: '11px', fontWeight: '800' }}>
+                  {activeIndices.length > 0 ? formatDateDE(getThirdMonday(activeIndices[activeIndices.length - 1])) : "-"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <h2>Cashflow Prognose / monatliche Abrechnung</h2>
+          <BarChart data={chartData} />
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'var(--spacing-6)' }}>
+          <div className="card">
+            <h2>Leistungsstand nach Bereichen</h2>
+            <div className="flex-col gap-4">
+              {/* Objektplanung */}
+              <div>
+                <div className="flex-row justify-between mb-1">
+                  <span style={{ fontSize: '11px', fontWeight: '700', textTransform: 'uppercase' }}>Objektplanung</span>
+                  <span style={{ fontSize: '11px', color: 'var(--color-primary)' }}>{formatCurrency(project.phases.reduce((s, p) => s + ((p.feeType === 'fixed' ? (Number(p.fixedAmount) || 0) : (project.overallBudget * (p.customShare !== undefined ? p.customShare : p.defaultShare)) / 100)), 0))}</span>
+                </div>
+                <div style={{ height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: '100%', background: '#cccccc', opacity: 0.3 }}></div>
+                </div>
+                {/* We can calculate actual performance vs plan later, for now just showing the areas */}
+              </div>
+              {/* Additional Budgets */}
+              {(project.additionalBudgets || []).map(ab => {
+                const abTotal = (ab.phases || []).reduce((s, ph) => s + (ab.overallBudget * (ph.customShare !== undefined ? ph.customShare : ph.defaultShare)) / 100, 0);
+                return (
+                  <div key={ab.id}>
+                    <div className="flex-row justify-between mb-1">
+                      <span style={{ fontSize: '11px', fontWeight: '700', textTransform: 'uppercase' }}>{ab.label}</span>
+                      <span style={{ fontSize: '11px', color: (ab.color || '#888') }}>{formatCurrency(abTotal)}</span>
+                    </div>
+                    <div style={{ height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: '100%', background: (ab.color || '#888'), opacity: 0.3 }}></div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="card">
+            <h2>Budget-Zusammenfassung</h2>
+            <div className="flex-col gap-2">
+               <div className="flex-row justify-between">
+                 <span style={{ color: 'var(--color-text-muted)', fontSize: '13px' }}>Netto Honorar</span>
+                 <span style={{ fontWeight: '700' }}>{formatCurrency(calculations.totalBudget)}</span>
+               </div>
+               <div className="flex-row justify-between">
+                 <span style={{ color: 'var(--color-text-muted)', fontSize: '13px' }}>Nebenkosten</span>
+                 <span style={{ fontWeight: '700' }}>{formatCurrency(calculations.totalSideCosts)}</span>
+               </div>
+               <div style={{ height: '1px', background: 'var(--color-border)', margin: '4px 0' }}></div>
+               <div className="flex-row justify-between">
+                 <span style={{ fontSize: '14px', fontWeight: '800' }}>GEPLANT GESAMT</span>
+                 <span style={{ fontSize: '14px', fontWeight: '800', color: 'var(--color-success)' }}>{formatCurrency(calculations.totalGross)}</span>
+               </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="flex-row justify-between mb-4">
+            <h2>Umsatzübersicht je Monat</h2>
+            <button className="btn btn-outline" onClick={() => window.print()}>🖨️ PDF Export (Drucken)</button>
+          </div>
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Monat</th>
+                  <th className="td-number">Honorar (Netto)</th>
+                  <th className="td-number">Nebenkosten ({project.sideCostsPercent}%)</th>
+                  <th className="td-number">Planwert (Gesamt)</th>
+                  <th className="td-number" style={{ borderLeft: '1px solid var(--color-border)', paddingLeft: '24px' }}>Fixer Rechnungsbetrag</th>
+                </tr>
+              </thead>
+              <tbody>
+                {activeIndices.map(i => {
+                  const net = calculations.monthlyCashflowData[i] || 0;
+                  const side = calculations.monthlySideCostsData[i] || 0;
+                  const inv = calculations.invoiceData[i] || {};
+                  
+                  return (
+                    <tr key={i}>
+                      <td>
+                        <strong>{getMonthLabel(i, project.startMonth, project.startYear)}</strong>
+                      </td>
+                      <td className="td-number">{formatCurrency(net)}</td>
+                      <td className="td-number">{formatCurrency(side)}</td>
+                      <td className="td-number" style={{ color: 'var(--color-text-muted)' }}>{formatCurrency(net + side)}</td>
+                      <td className="td-number" style={{ borderLeft: '1px solid var(--color-border)', paddingLeft: '24px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                          <input 
+                            type="number"
+                            className="input-table"
+                            style={{ 
+                              width: '100px', 
+                              fontSize: '14px', 
+                              fontWeight: inv.isManual ? '700' : '400',
+                              fontStyle: inv.isManual ? 'normal' : 'italic',
+                              opacity: inv.isManual ? 1 : 0.6,
+                              color: inv.isWarning ? '#ef4444' : '#60a5fa',
+                              textAlign: 'right'
+                            }}
+                            value={inv.finalInvoiced === 0 && !inv.isManual ? '' : inv.finalInvoiced}
+                            onFocus={() => pushToHistory()}
+                            onChange={(e) => updateManualInvoice(i, e.target.value)}
+                            placeholder="0"
+                          />
+                          <span style={{ fontSize: '14px', color: '#60a5fa', opacity: inv.isManual ? 1 : 0.6 }}>€</span>
+                        </div>
+                        {inv.carryOverToNext > 0.5 && (
+                          <div style={{ fontSize: '10px', color: '#22c55e', marginTop: '4px', fontWeight: '600' }}>
+                            + {formatCurrency(inv.carryOverToNext)} Puffer
+                          </div>
+                        )}
+                        {inv.carryOverToNext < -0.5 && (
+                          <div style={{ fontSize: '10px', color: '#ef4444', marginTop: '4px', fontWeight: '600' }}>
+                            {formatCurrency(inv.carryOverToNext)} Korrektur
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+              <tfoot>
+                <tr style={{ background: 'rgba(255,255,255,0.02)', borderTop: '2px solid var(--color-border)' }}>
+                  <th style={{ textAlign: 'left', color: 'var(--color-text-muted)' }}>SUMME GEPLANT (AKTUELL)</th>
+                  <th className="td-number" style={{ fontWeight: '400', color: 'var(--color-text-muted)' }}>
+                    {formatCurrency(activeIndices.reduce((acc, i) => acc + (calculations.monthlyCashflowData[i]||0), 0))}
+                  </th>
+                  <th className="td-number" style={{ fontWeight: '400', color: 'var(--color-text-muted)' }}>
+                    {formatCurrency(activeIndices.reduce((acc, i) => acc + (calculations.monthlySideCostsData[i]||0), 0))}
+                  </th>
+                  <th className="td-number" style={{ fontWeight: '700', color: 'var(--color-text-muted)' }}>
+                    {formatCurrency(activeIndices.reduce((acc, i) => acc + (calculations.monthlyCashflowData[i]||0) + (calculations.monthlySideCostsData[i]||0), 0))}
+                  </th>
+                  <th className="td-number" style={{ borderLeft: '1px solid var(--color-border)', paddingLeft: '24px' }}>
+                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                        <span style={{ color: '#60a5fa', fontWeight: '700' }}>
+                           {formatCurrency(activeIndices.reduce((acc, i) => acc + (calculations.invoiceData[i]?.finalInvoiced || 0), 0))}
+                        </span>
+                        <span style={{ fontSize: '14px', color: '#60a5fa' }}>€</span>
+                     </div>
+                  </th>
+                </tr>
+                <tr style={{ background: 'var(--color-surface)' }}>
+                  <th style={{ textAlign: 'left' }}>KONTROLLSUMME / PROJEKT GESAMT</th>
+                  <th className="td-number" style={{ fontWeight: '400', color: Math.abs(activeIndices.reduce((acc, i) => acc + (calculations.monthlyCashflowData[i]||0), 0) - calculations.totalBudget) > 1 ? '#ef4444' : 'var(--color-primary)', opacity: 0.5 }}>{formatCurrency(calculations.totalBudget)}</th>
+                  <th className="td-number" style={{ fontWeight: '400', color: Math.abs(activeIndices.reduce((acc, i) => acc + (calculations.monthlySideCostsData[i]||0), 0) - calculations.totalSideCosts) > 1 ? '#ef4444' : 'var(--color-primary)', opacity: 0.5 }}>{formatCurrency(calculations.totalSideCosts)}</th>
+                  <th className="td-number" style={{ fontWeight: '700', color: Math.abs(activeIndices.reduce((acc, i) => acc + (calculations.monthlyCashflowData[i]||0) + (calculations.monthlySideCostsData[i]||0), 0) - calculations.totalGross) > 1 ? '#ef4444' : 'var(--color-primary)' }}>{formatCurrency(calculations.totalGross)}</th>
+                  <th className="td-number" style={{ borderLeft: '1px solid var(--color-border)', paddingLeft: '24px' }}>
+                    <div className="flex-col items-end" style={{ gap: '4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                        <strong style={{ color: Math.abs(activeIndices.reduce((acc, i) => acc + (calculations.invoiceData[i]?.finalInvoiced || 0), 0) - calculations.totalGross) > 1 ? '#ef4444' : '#60a5fa' }}>
+                          {formatCurrency(calculations.totalGross)}
+                        </strong>
+                        <span style={{ fontSize: '14px', fontWeight: '700' }}>€</span>
+                      </div>
+                      {Math.abs(activeIndices.reduce((acc, i) => acc + (calculations.invoiceData[i]?.finalInvoiced || 0), 0) - calculations.totalGross) > 1 && (
+                        <div style={{ fontSize: '9px', color: '#ef4444', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          ℹ️ Es sind noch Rechnungen zu verplanen
+                        </div>
+                      )}
+                    </div>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const handleExport = () => {
+    const dataStr = JSON.stringify(project, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    const exportFileDefaultName = `${project.projectNumber || '0000'}_${project.name || 'Projekt'}.json`;
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  };
+  
+  const handleExportPDF = async () => {
+    const input = document.getElementById('gantt-chart-content');
+    if (!input) return;
+    
+    // Feedback to user
+    const btn = document.getElementById('pdf-export-btn');
+    const originalText = btn ? btn.innerHTML : '';
+    if (btn) btn.innerHTML = '⌛ Generiere PDF...';
+
+    try {
+      // Capture the element using html2canvas
+      // We use a high scale for better quality
+      const canvas = await html2canvas(input, {
+        backgroundColor: '#111111',
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        // Ensure we capture the full scrollable width
+        width: input.scrollWidth,
+        height: input.scrollHeight,
+        windowWidth: input.scrollWidth,
+        windowHeight: input.scrollHeight,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0
+      });
+      
+      const imgData = canvas.toDataURL('image/jpeg', 0.85);
+      const { jsPDF } = window.jspdf;
+      
+      // Calculate PDF dimensions based on the canvas aspect ratio
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      
+      // Let's use a base width of 420mm (A3 scale) for good resolution
+      const pdfWidth = 420; 
+      const pdfHeight = (imgHeight * pdfWidth) / imgWidth;
+      
+      const doc = new jsPDF({
+        orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [pdfWidth, pdfHeight]
+      });
+      
+      doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      
+      const filename = `${project.projectNumber || '0000'}_${project.name || 'Projekt'}_ZEITPLAN.pdf`;
+      doc.save(filename);
+    } catch (err) {
+      console.error('PDF Export fail:', err);
+      alert('PDF Export fehlgeschlagen: ' + err.message);
+    } finally {
+      if (btn) btn.innerHTML = originalText;
+    }
+  };
+
+  const handleImport = (e) => {
+    const fileReader = new FileReader();
+    fileReader.readAsText(e.target.files[0], "UTF-8");
+    fileReader.onload = (event) => {
+      try {
+        const imported = JSON.parse(event.target.result);
+        if (confirm("Möchtest du das aktuelle Projekt durch das importierte ersetzen? Alle unsicherten Änderungen gehen verloren.")) {
+          setIsDirty(true);
+          setProject(imported);
+          logActivity("Projektdaten importiert");
+        }
+      } catch (err) {
+        alert("Fehler beim Importieren: Ungültige Datei.");
+      }
+    };
+  };
+
+  const renderStammdaten = () => (
+    <div className="card max-w-2xl">
+      <h2>Projekt Stammdaten</h2>
+      <div className="flex-row flex-wrap gap-x-8 gap-y-4" style={{ maxWidth: '480px' }}>
+        <div className="form-group" style={{ width: '120px' }}>
+          <label>Projektnummer</label>
+          <input 
+            type="text" 
+            pattern="\d{4}"
+            maxLength="4"
+            placeholder="0000"
+            disabled={isLocked}
+            value={project.projectNumber} 
+            onChange={(e) => updateProjectField('projectNumber', e.target.value.replace(/\D/g, ''))} 
+            onFocus={(e) => { 
+              if (isLocked) return;
+              const t = e.target;
+              pushToHistory(); 
+              setTimeout(() => t.select(), 0); 
+            }}
+            onBlur={() => markChange('projectNumber')}
+          />
+        </div>
+        <div className="form-group" style={{ flex: '1', minWidth: '220px' }}>
+          <label>Projektname</label>
+          <input 
+            disabled={isLocked}
+            value={project.name} 
+            onChange={(e) => updateProjectField('name', e.target.value)} 
+            onFocus={(e) => { 
+              if (isLocked) return;
+              const t = e.target;
+              pushToHistory(); 
+              setTimeout(() => t.select(), 0); 
+            }}
+            onBlur={() => markChange('name')}
+          />
+        </div>
+        
+        <div className="flex-row gap-8 w-full">
+          <div className="form-group" style={{ width: '120px' }}>
+            <label>Nebenkosten (%)</label>
+            <input 
+              type="number" 
+              disabled={isLocked}
+              value={project.sideCostsPercent} 
+              onChange={(e) => updateProjectField('sideCostsPercent', Number(e.target.value))} 
+              onFocus={(e) => { 
+                if (isLocked) return;
+                const t = e.target;
+                pushToHistory(); 
+                setTimeout(() => t.select(), 0); 
+              }}
+              onBlur={() => markChange('sideCosts')}
+            />
+          </div>
+        </div>
+
+        <div className="flex-row gap-4 w-full">
+          <div className="form-group" style={{ width: '120px' }}>
+            <label>Start-Monat</label>
+            <select 
+              disabled={isLocked}
+              value={project.startMonth} 
+              onChange={(e) => { if (isLocked) return; pushToHistory(); updateProjectField('startMonth', Number(e.target.value)); markChange('timeframe'); }}
+            >
+              {MONTH_NAMES.map((name, idx) => (
+                <option key={idx} value={idx}>{name}</option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group" style={{ width: '120px' }}>
+            <label>Start-Jahr</label>
+            <input 
+              type="number" 
+              disabled={isLocked}
+              value={project.startYear} 
+              onChange={(e) => updateProjectField('startYear', Number(e.target.value))} 
+              onFocus={(e) => { 
+                if (isLocked) return;
+                const t = e.target;
+                pushToHistory(); 
+                setTimeout(() => t.select(), 0); 
+              }}
+              onBlur={() => markChange('timeframe')}
+            />
+          </div>
+        </div>
+
+        <div className="form-group" style={{ width: '120px' }}>
+          <label style={{ whiteSpace: 'nowrap' }}>Dauer (Monate)</label>
+          <input 
+            type="number" 
+            min="1" 
+            max="120" 
+            disabled={isLocked}
+            value={project.numMonths} 
+            onChange={(e) => updateNumMonths(e.target.value)} 
+            onBlur={() => markChange('timeframe')}
+            onFocus={(e) => { 
+              if (isLocked) return;
+              const t = e.target;
+              pushToHistory(); 
+              setTimeout(() => t.select(), 0); 
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="divider mt-8" style={{ borderTop: '1px solid var(--color-border)', margin: '32px 0' }}></div>
+      
+      <h2 className="mt-6">Projekt-Sicherheit</h2>
+      <div className="form-group max-w-xs">
+        <label>Passwort zum Entsperren</label>
+        <div className="flex-row">
+          <input 
+            type="text" 
+            placeholder="Neues Passwort"
+            onChange={(e) => updateProjectField('password', e.target.value)}
+            onBlur={() => markChange('password')}
+          />
+        </div>
+      </div>
+
+      <div className="divider mt-8" style={{ borderTop: '1px solid var(--color-border)', margin: '32px 0' }}></div>
+      
+      <h2 className="mt-6">Daten-Transfer</h2>
+      <p style={{fontSize: '12px', color: 'var(--color-text-muted)', marginBottom: '16px'}}>
+        Exportiere dein Projekt als Datei, um es auf einem anderen Gerät zu laden.
+      </p>
+      <div className="flex-row gap-4">
+        <button className="btn btn-outline" onClick={handleExport}>📥 Projekt exportieren (.json)</button>
+        <button className="btn btn-outline" style={{position: 'relative'}} disabled={isLocked}>
+           📤 Projekt importieren
+           {!isLocked && (
+             <input 
+               type="file" 
+               accept=".json" 
+               onChange={handleImport}
+               style={{opacity: 0, position: 'absolute', inset: 0, cursor: 'pointer', width: '100%'}}
+             />
+           )}
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderBudgetSettings = () => {
+    return (
+    <div className="card max-w-2xl">
+      <h2>Objektplanung</h2>
+      <div className="form-group">
+        <label>Basishonorar LP1-9 zzgl. Nebenkosten</label>
+        <div className="flex-row">
+          <input 
+            type={budgetInputFocused ? "number" : "text"} 
+            disabled={isLocked}
+            value={budgetInputFocused ? project.overallBudget : formatCurrency(project.overallBudget || 0)} 
+            onChange={(e) => updateProjectField('overallBudget', Number(e.target.value.replace(/[^0-9.-]+/g,"")))} 
+            onFocus={(e) => { if (isLocked) return; pushToHistory(); setBudgetInputFocused(true); setTimeout(() => e.target.select(), 0); }}
+            onBlur={() => { setBudgetInputFocused(false); markChange('budget'); }}
+          />
+        </div>
+      </div>
+
+      <div className="table-container mt-4">
+        <table>
+          <thead>
+            <tr>
+              <th>Leistungsphase</th>
+              <th style={{ width: '120px' }}>Typ</th>
+              <th className="td-number" style={{ width: '80px' }}>Beauftragt (%)</th>
+              <th className="td-number" style={{ width: '120px' }}>Budget (EUR)</th>
+              <th style={{ width: '40px' }}></th>
+            </tr>
+          </thead>
+          <tbody>
+            {project.phases.filter(p => !p.isEvent).map((p, idx) => {
+              const pCustom = p.customShare !== undefined ? p.customShare : p.defaultShare;
+              const feeType = p.feeType || 'percent';
+              const phaseBudget = feeType === 'fixed' ? (p.fixedAmount || 0) : (project.overallBudget * pCustom) / 100;
+              
+              const isPlaceholder = p.id === 'XXX' || p.name === 'Bezeichnung Leistung';
+              const isZero = phaseBudget === 0 && !isPlaceholder;
+              const isCustom = p.isCustom === true;
+              
+              return (
+              <tr 
+                key={p.id} 
+                draggable={!isPlaceholder}
+                onDragStart={(e) => handleDragStart(e, p.id)}
+                onDragOver={(e) => handleDragOver(e, p.id)}
+                onDrop={(e) => handleDrop(e, p.id)}
+                onDragEnd={handleDragEnd}
+                style={{ 
+                  opacity: isPlaceholder ? 0.4 : (isZero ? 0.3 : 1), 
+                  fontStyle: isPlaceholder ? 'italic' : 'normal',
+                  transition: 'background 0.2s, opacity 0.2s',
+                  background: dragOverPhaseId === p.id ? 'rgba(255,255,255,0.05)' : (draggedPhaseId === p.id ? 'rgba(0,0,0,0.5)' : 'transparent'),
+                  cursor: isPlaceholder ? 'default' : 'grab'
+                }}>
+                <td style={{ minWidth: '240px' }}>
+                  <div className="flex-row" style={{ gap: '4px', alignItems: 'center' }}>
+                    <div style={{ color: 'var(--color-text-muted)', fontSize: '14px', width: '12px', opacity: 0.5 }}>⋮⋮</div>
+                    <input 
+                      className="input-table" 
+                      style={{ width: '45px', fontWeight: 'bold', borderBottom: 'none', textAlign: 'left', color: 'inherit', fontStyle: 'inherit' }}
+                      value={p.id}
+                      disabled={isLocked}
+                      onFocus={(e) => { 
+                        if (isLocked) return;
+                        pushToHistory(); 
+                        if (e.target.value === 'XXX') updatePhase(p.id, 'id', '');
+                      }}
+                      onChange={(e) => updatePhase(p.id, 'id', e.target.value)}
+                    />
+                    <span style={{ color: 'var(--color-text-muted)' }}>-</span>
+                    <input 
+                      className="input-table" 
+                      style={{ flex: 1, borderBottom: 'none', textAlign: 'left', color: 'inherit', fontStyle: 'inherit' }}
+                      value={p.name}
+                      disabled={isLocked}
+                      onFocus={(e) => { 
+                        if (isLocked) return;
+                        pushToHistory(); 
+                        if (e.target.value === 'Bezeichnung Leistung') updatePhase(p.id, 'name', '');
+                      }}
+                      onChange={(e) => updatePhase(p.id, 'name', e.target.value)}
+                    />
+                  </div>
+                </td>
+                <td>
+                  {isCustom ? (
+                    <select 
+                      className="input-table"
+                      style={{ width: '100px', fontSize: '11px', borderBottom: 'none' }}
+                      value={feeType}
+                      disabled={isLocked}
+                      onChange={(e) => {
+                         if (isLocked) return;
+                         pushToHistory();
+                         updatePhase(p.id, 'feeType', e.target.value);
+                         if (e.target.value === 'fixed' && !p.fixedAmount) {
+                            updatePhase(p.id, 'fixedAmount', (project.overallBudget * pCustom) / 100);
+                         }
+                      }}
+                    >
+                      <option value="percent">% Anteil</option>
+                      <option value="fixed">Pauschal</option>
+                    </select>
+                  ) : (
+                    <span style={{ fontSize: '11px', color: 'var(--color-text-muted)', paddingLeft: '8px' }}>
+                      HOAI {p.defaultShare}%
+                    </span>
+                  )}
+                </td>
+                <td className="td-number">
+                  <div style={{ width: '80px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginLeft: 'auto' }}>
+                    {feeType === 'fixed' ? (
+                      <div style={{ color: 'var(--color-text-muted)', fontSize: '14px', width: '100%', textAlign: 'right', paddingRight: '16px' }}>-</div>
+                    ) : (
+                      <>
+                        <input 
+                          type="number" 
+                          max={isCustom ? 100 : p.defaultShare}
+                          className="input-table"
+                          style={{ flex: 1, paddingRight: '4px' }}
+                          value={Number(pCustom).toString()} 
+                          disabled={isLocked}
+                          onChange={(e) => {
+                             if (isLocked) return;
+                             let val = Number(e.target.value);
+                             const max = isCustom ? 100 : p.defaultShare;
+                             if (val > max) val = max; 
+                             updatePhase(p.id, 'customShare', val);
+                          }} 
+                          onFocus={(e) => { 
+                            if (isLocked) return;
+                            const t = e.target;
+                            pushToHistory(); 
+                            setTimeout(() => t.select(), 0); 
+                          }}
+                        />
+                        <span style={{ fontSize: '12px', color: 'var(--color-text-muted)', width: '12px', textAlign: 'right' }}>%</span>
+                      </>
+                    )}
+                  </div>
+                </td>
+                <td className="td-number">
+                  <div className="flex-row items-center justify-end" style={{ gap: '4px' }}>
+                    <input 
+                      type={focusedPhaseId === p.id ? "number" : "text"} 
+                      className="input-table"
+                      style={{ 
+                         width: '100px', 
+                         fontWeight: feeType === 'fixed' ? '700' : '400',
+                         textAlign: 'right'
+                      }}
+                      value={focusedPhaseId === p.id ? (phaseBudget % 1 !== 0 ? phaseBudget.toFixed(2) : phaseBudget) : formatCurrency(phaseBudget)} 
+                      disabled={isLocked}
+                      onChange={(e) => {
+                         if (isLocked) return;
+                         let rawVal = e.target.value.replace(/[^0-9.-]+/g,"");
+                         let val = Number(rawVal);
+                         if (isNaN(val)) return;
+                         
+                         if (feeType === 'fixed') {
+                            updatePhase(p.id, 'fixedAmount', val);
+                         } else {
+                            if (!project.overallBudget) return updatePhase(p.id, 'customShare', 0);
+                            let newCustomShare = (val / project.overallBudget) * 100;
+                            if (newCustomShare > 100) newCustomShare = 100;
+                            updatePhase(p.id, 'customShare', newCustomShare);
+                         }
+                      }} 
+                      onFocus={(e) => { 
+                        if (isLocked) return;
+                        pushToHistory(); 
+                        setFocusedPhaseId(p.id); 
+                      }}
+                      onBlur={() => setFocusedPhaseId(null)}
+                    />
+                    {focusedPhaseId === p.id && <span style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>€</span>}
+                  </div>
+                </td>
+                <td style={{ width: '40px', textAlign: 'center' }}>
+                   {isCustom && (
+                     <button 
+                        className="btn-outline" 
+                        style={{ border: 'none', background: 'transparent', cursor: isLocked ? 'not-allowed' : 'pointer', opacity: isLocked ? 0.1 : 0.3 }}
+                        disabled={isLocked}
+                        onClick={() => { if (!isLocked) removePhase(p.id); }}
+                        title="Phase löschen"
+                     >
+                      🗑️
+                     </button>
+                   )}
+                </td>
+              </tr>
+            )})}
+            {/* ADD PHASE BUTTON ROW */}
+            <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <td colSpan="5" style={{ padding: 'var(--spacing-4)', textAlign: 'left' }}>
+                 {!isLocked && (
+                  <button 
+                    className="btn btn-outline" 
+                    style={{ fontSize: '11px', padding: 'var(--spacing-2) var(--spacing-4)' }}
+                    onClick={addPhase}
+                  >
+                    + LEISTUNG HINZUFÜGEN
+                  </button>
+                )}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colSpan="2">Summe Honorar (Netto)</th>
+              <th className="td-number">
+                 {(project.phases.reduce((acc, p) => acc + (p.customShare !== undefined ? p.customShare : p.defaultShare), 0)).toLocaleString('de-DE', {minimumFractionDigits: 0, maximumFractionDigits: 1})}%
+              </th>
+              <th className="td-number"><strong>{formatCurrency(calculations.totalBudget)}</strong></th>
+            </tr>
+            <tr style={{ background: 'transparent' }}>
+              <th colSpan="3" style={{ fontWeight: '400', fontSize: '11px', color: 'var(--color-text-muted)', paddingTop: '8px' }}>Nebenkosten ({project.sideCostsPercent}%)</th>
+              <th className="td-number" style={{ fontWeight: '400', fontSize: '11px', color: 'var(--color-text-muted)', paddingTop: '8px' }}>{formatCurrency(calculations.totalSideCosts)}</th>
+            </tr>
+            <tr style={{ borderTop: '1px solid var(--color-border)' }}>
+              <th colSpan="3" style={{ fontSize: '13px', paddingTop: '8px' }}>Gesamtbudget (Brutto inkl. NK)</th>
+              <th className="td-number" style={{ fontSize: '13px', color: 'var(--color-success)', paddingTop: '8px'}}><strong>{formatCurrency(calculations.totalGross)}</strong></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    );
+  };
+
+  const renderAdditionalBudgets = () => {
+    return (
+      <div>
+        {(project.additionalBudgets || []).map(ab => {
+          const abTotal = (ab.phases || []).reduce((s, ph) => s + (ab.overallBudget * (ph.customShare !== undefined ? ph.customShare : ph.defaultShare)) / 100, 0);
+          return (
+            <div className="card max-w-2xl" key={ab.id} style={{ marginTop: "24px", borderLeft: "3px solid " + (ab.color || "#888") }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "var(--spacing-4)", borderBottom: "1px solid var(--color-border)", paddingBottom: "8px" }}>
+                <input 
+                  className="input-table" 
+                  style={{ fontSize: "16px", fontWeight: "400", flex: 1, border: "none", background: "transparent", textTransform: "uppercase", letterSpacing: "0.05em", padding: 0 }} 
+                  value={ab.label} 
+                  disabled={isLocked} 
+                  onChange={e => updateLeistungsbildLabel(ab.id, e.target.value)} 
+                />
+                {!isLocked && <button className="btn-outline" style={{ border: "none", background: "transparent", cursor: "pointer", opacity: 0.4, marginLeft: "8px" }} onClick={() => removeLeistungsbild(ab.id)}>🗑️</button>}
+              </div>
+              
+              <div className="form-group">
+                <label>BASISHONORAR LP1-9 ZZGL. NEBENKOSTEN</label>
+                <div className="flex-row">
+                  <input 
+                    type={focusedABId === ab.id ? "number" : "text"} 
+                    disabled={isLocked} 
+                    value={focusedABId === ab.id ? ab.overallBudget : formatCurrency(ab.overallBudget || 0)} 
+                    onChange={e => updateLeistungsbildBudget(ab.id, Number(e.target.value.replace(/[^0-9.-]+/g,"")))} 
+                    onFocus={e => { if (!isLocked) { pushToHistory(); setFocusedABId(ab.id); setTimeout(() => e.target.select(), 0); } }} 
+                    onBlur={() => setFocusedABId(null)}
+                  />
+                </div>
+              </div>
+
+              <div className="table-container mt-4">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Leistungsphase</th>
+                      <th className="td-number" style={{width:"80px"}}>HOAI (%)</th>
+                      <th className="td-number" style={{width:"80px"}}>Beauftragt (%)</th>
+                      <th className="td-number" style={{width:"120px"}}>Budget (EUR)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(ab.phases || []).map(ph => { 
+                      const pCust = ph.customShare !== undefined ? ph.customShare : ph.defaultShare; 
+                      const phB = (ab.overallBudget * pCust) / 100; 
+                      return (
+                        <tr key={ph.id}>
+                          <td style={{minWidth:"200px"}}>
+                            <strong style={{marginRight:"8px"}}>{ph.id}</strong>{ph.name}
+                          </td>
+                          <td className="td-number" style={{color:"var(--color-text-muted)",fontSize:"11px"}}>{ph.defaultShare}%</td>
+                          <td className="td-number">
+                            <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",gap:"2px"}}>
+                              <input 
+                                type="number" 
+                                className="input-table" 
+                                style={{width:"50px"}} 
+                                value={Number(pCust).toString()} 
+                                disabled={isLocked} 
+                                max={100} 
+                                onChange={e => { 
+                                  if(isLocked)return; 
+                                  let v=Number(e.target.value); 
+                                  if(v>100)v=100; 
+                                  updateLeistungsbildPhase(ab.id,ph.id,"customShare",v); 
+                                }} 
+                                onFocus={e => { if(!isLocked){pushToHistory();setTimeout(()=>e.target.select(),0);} }} 
+                              />
+                              <span style={{fontSize:"11px",color:"var(--color-text-muted)"}}>%</span>
+                            </div>
+                          </td>
+                          <td className="td-number">{formatCurrency(phB)}</td>
+                        </tr>
+                      ); 
+                    })}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th colSpan="3">Summe Honorar (Netto)</th>
+                      <th className="td-number"><strong>{formatCurrency(abTotal)}</strong></th>
+                    </tr>
+                    <tr style={{background:"transparent"}}>
+                      <th colSpan="3" style={{fontWeight:"400",fontSize:"11px",color:"var(--color-text-muted)",paddingTop:"8px"}}>Nebenkosten ({project.sideCostsPercent}%)</th>
+                      <th className="td-number" style={{fontWeight:"400",fontSize:"11px",color:"var(--color-text-muted)",paddingTop:"8px"}}>{formatCurrency(abTotal*project.sideCostsPercent/100)}</th>
+                    </tr>
+                    <tr style={{borderTop:"1px solid var(--color-border)"}}>
+                      <th colSpan="3" style={{fontSize:"13px",paddingTop:"8px"}}>Gesamt (Brutto inkl. NK)</th>
+                      <th className="td-number" style={{fontSize:"13px",color:"var(--color-success)",paddingTop:"8px"}}><strong>{formatCurrency(abTotal*(1+project.sideCostsPercent/100))}</strong></th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          );
+        })}
+        {!isLocked && (<div style={{marginTop:"24px"}}><button className="btn btn-outline" style={{fontSize:"13px",padding:"var(--spacing-3) var(--spacing-5)"}} onClick={() => setShowAddLeistungsbildModal(true)}>+ Leistungsbild hinzufügen</button></div>)}
+        {showAddLeistungsbildModal && (<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000}}><div className="card" style={{minWidth:"340px",maxWidth:"420px",padding:"32px"}}><h2 style={{marginBottom:"16px"}}>Leistungsbild hinzufügen</h2><p style={{color:"var(--color-text-muted)",fontSize:"13px",marginBottom:"20px"}}>Wählen Sie ein HOAI-Leistungsbild. Die HOAI-Prozentsätze werden automatisch eingefügt.</p><div className="form-group"><label>Leistungsbild</label><select value={selectedLeistungsbild} onChange={e => setSelectedLeistungsbild(e.target.value)} style={{width:"100%",padding:"8px",background:"var(--color-surface)",color:"var(--color-text)",border:"1px solid var(--color-border)",borderRadius:"4px",fontSize:"14px"}}>{Object.entries(HOAI_LEISTUNGSBILDER).map(([key,def])=>(<option key={key} value={key}>{def.label}</option>))}</select></div><div style={{display:"flex",gap:"12px",marginTop:"24px"}}><button className="btn btn-primary" style={{flex:1}} onClick={addLeistungsbild}>Hinzufügen</button><button className="btn btn-outline" style={{flex:1}} onClick={() => setShowAddLeistungsbildModal(false)}>Abbrechen</button></div></div></div>)}
+      </div>
+    );
+  };
+
+  const renderSchedule = () => {
+    const cellWidth = ganttZoom === 'month' ? 80 : 24;
+    const rowHeight = 60;
+    const sidebarWidth = 450;
+
+    // Daily zoom total days calculation
+    const totalDays = project.numMonths * 31; // Buffer
+    const daysArray = Array.from({ length: totalDays }, (_, i) => i);
+    const monthsArray = Array.from({ length: project.numMonths || 12 }, (_, i) => i);
+
+    const handleDateUpdate = (id, field, iso) => {
+      if (isLocked) return;
+      pushToHistory();
+      setProject(prev => {
+        setIsDirty(true);
+        let updatedPhases = JSON.parse(JSON.stringify(prev.phases));
+        
+        // 1. Update the original target
+        const targetIndex = updatedPhases.findIndex(p => p.id === id);
+        if (targetIndex === -1) return prev;
+        
+        // Ensure strings exist
+        if (!updatedPhases[targetIndex].startDate) updatedPhases[targetIndex].startDate = getISOFromIdx(updatedPhases[targetIndex].startMonthIdx);
+        if (!updatedPhases[targetIndex].endDate) updatedPhases[targetIndex].endDate = getISOFromIdx(updatedPhases[targetIndex].startMonthIdx, true);
+
+        const oldStart = updatedPhases[targetIndex].startDate;
+        const oldEnd = updatedPhases[targetIndex].endDate;
+        const oldDuration = getDurationDays(oldStart, oldEnd);
+
+        updatedPhases[targetIndex][field] = iso;
+
+        if (field === 'startDate' && iso && iso.includes('-')) {
+           updatedPhases[targetIndex].endDate = addWorkingDays(iso, oldDuration - 1);
+        }
+
+        // 2. Cascade logic using refactored function
+        updatedPhases = cascadeDates(updatedPhases, id, prev.startYear, prev.startMonth);
+
+        // Final sync of the changed item's internal indices - Safe Split
+        const finalTarget = updatedPhases[targetIndex];
+        if (finalTarget.startDate && finalTarget.startDate.includes('-')) {
+          const [fy, fm] = finalTarget.startDate.split('-').map(Number);
+          finalTarget.startMonthIdx = (fy - (prev.startYear || 2024)) * 12 + (fm - 1) - (prev.startMonth || 0);
+        }
+
+        return { ...prev, phases: updatedPhases };
+      });
+    };
+
+    // Removed duplicate updatePhaseSchedule helper
+    const handleUpdateLocal = (id, field, val) => { if (!isLocked) updatePhase(id, field, val); };
+
+    // Filter for visible items: all events OR phases with budget > 0
+    // Collect all phases: Objektplanung + additional Leistungsbilder
+    const activePhases = [
+      ...project.phases.filter(p => {
+        if (p.isEvent) return true;
+        const pC = p.customShare !== undefined ? p.customShare : p.defaultShare;
+        const ft = p.feeType || "percent";
+        const pb = ft === "fixed" ? (Number(p.fixedAmount) || 0) : (project.overallBudget * pC) / 100;
+        return pb > 0;
+      })
+    ];
+
+    return (
+      <div className="card" id="gantt-chart-content" style={{ padding: '0', display: 'flex', flexDirection: 'column', background: 'var(--color-card)' }}>
+        <div className="flex-row justify-between" style={{ padding: '24px 32px' }}>
+          <div>
+            <h2 style={{ margin: '0' }}>Zeitplan</h2>
+            {showThirdMonday && (
+              <p style={{ margin: '4px 0 0', fontSize: '11px', color: 'var(--color-success)', fontWeight: '700', letterSpacing: '0.05em' }}>
+                3. MONTAG DES MONATS
+              </p>
+            )}
+          </div>
+          <div className="flex-row gap-4">
+             <button 
+               className="btn btn-outline" 
+               onClick={() => setShowThirdMonday(!showThirdMonday)}
+               style={{ minWidth: '160px', color: showThirdMonday ? 'var(--color-success)' : 'inherit' }}
+             >
+               {showThirdMonday ? '✕ 3. Montage ausblenden' : '👁 3. Montage einblenden'}
+             </button>
+             <button 
+               className="btn btn-outline" 
+               onClick={() => setGanttZoom(prev => prev === 'month' ? 'day' : 'month')}
+               style={{ minWidth: '140px' }}
+             >
+               🔍 {ganttZoom === 'month' ? 'Ansicht Tage' : 'Ansicht Monate'}
+             </button>
+             <button id="pdf-export-btn" className="btn btn-outline" onClick={handleExportPDF}>📄 PDF Export</button>
+             {!isLocked && (
+               <button className="btn btn-outline" onClick={() => addEvent()}>Termin hinzufügen</button>
+             )}
+          </div>
+        </div>
+
+        <div style={{ position: 'relative', overflowX: 'auto', flex: 1, borderTop: '1px solid var(--color-border)', minHeight: '450px' }}>
+          <div style={{ display: 'flex', minWidth: 'max-content' }}>
+            
+            {/* Sidebar Columns */}
+            <div style={{ width: sidebarWidth, flexShrink: 0, borderRight: '1px solid var(--color-border)', background: 'var(--color-card)', zIndex: 10 }}>
+               <div style={{ height: 40, borderBottom: '1px solid var(--color-border)', padding: '0 12px', display: 'flex', alignItems: 'center', fontSize: '9px', fontWeight: '800', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', gap: '8px' }}>
+                 <div style={{ width: 15 }}></div>
+                 <div style={{ width: 125 }}>BEZEICHNUNG</div>
+                 <div style={{ width: 100 }}>START</div>
+                 <div style={{ width: 100 }}>ENDE</div>
+                 <div style={{ width: 60 }}>WERKTAGE</div>
+                 <div style={{ width: 25 }}></div>
+               </div>
+               {activePhases.map((p, idx) => {
+                 const startISO = p.startDate || getISOFromIdx(p.startMonthIdx);
+                 const endISO = p.endDate || getISOFromIdx(p.startMonthIdx, true);
+                 
+                 return (
+                   <div 
+                     key={p.id} 
+                     draggable={!isLocked}
+                     onDragStart={(e) => handleDragStart(e, p.id)}
+                     onDragOver={(e) => handleDragOver(e, p.id)}
+                     onDrop={(e) => handleDrop(e, p.id)}
+                     onDragEnd={handleDragEnd}
+                     style={{ 
+                       height: rowHeight, 
+                       borderBottom: '1px solid var(--color-border)', 
+                       padding: '0 12px', 
+                       display: 'flex', 
+                       alignItems: 'center', 
+                       gap: '8px',
+                       background: dragOverPhaseId === p.id ? 'rgba(255,255,255,0.05)' : (draggedPhaseId === p.id ? 'rgba(0,0,0,0.5)' : 'transparent'),
+                       cursor: isLocked ? 'default' : 'grab',
+                       transition: 'background 0.2s'
+                     }}
+                    >
+                       {p._sourceLabel && <div style={{ width: "3px", height: "30px", borderRadius: "2px", background: p._sourceColor || "#888", flexShrink: 0 }} title={p._sourceLabel}></div>}
+                      <div style={{ width: 15, color: 'var(--color-text-muted)', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.5 }}>
+                        ⋮⋮
+                      </div>
+                      <div style={{ width: 115, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ 
+                           fontSize: '9px', 
+                           fontWeight: '800', 
+                           color: 'var(--color-text-muted)', 
+                           border: '1px solid var(--color-border)', 
+                           padding: '1px 5px', 
+                           borderRadius: '2px',
+                           background: 'rgba(255,255,255,0.02)',
+                           letterSpacing: '0.05em'
+                        }}>#{(idx + 1).toString().padStart(3, '0')}</span>
+                        {p.isEvent ? (
+                          <input 
+                            type="text"
+                            className="input-table"
+                            style={{ 
+                             flex: 1, 
+                             height: '24px', 
+                             fontSize: '13px', 
+                             fontWeight: '700', 
+                             padding: '0', 
+                             background: 'transparent',
+                             border: 'none',
+                             color: 'var(--color-text)',
+                             textAlign: 'left',
+                             minWidth: 0
+                           }}
+                            value={p.name}
+                            disabled={isLocked}
+                            onChange={(e) => { if (!isLocked) updatePhase(p.id, 'name', e.target.value); }}
+                          />
+                        ) : (
+                          <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--color-text)' }}>{p.id}</div>
+                        )}
+                      </div>
+                     
+                     <div 
+                        style={{ position: 'relative', width: 95, cursor: isLocked ? 'not-allowed' : 'pointer' }}
+                        onClick={(e) => {
+                          if (isLocked) return;
+                          const input = e.currentTarget.querySelector('input');
+                          if (input && input.showPicker) {
+                            try { input.showPicker(); } catch (err) {}
+                          }
+                        }}
+                     >
+                        <input 
+                          type="date" 
+                          className="input-table"
+                          style={{ width: '100%', fontSize: '11px', height: '24px', background: 'rgba(255,255,255,0.03)', color: '#fff', border: '1px solid var(--color-border)', padding: '0 4px' }}
+                          value={startISO}
+                          disabled={isLocked}
+                          onChange={(e) => handleDateUpdate(p.id, 'startDate', e.target.value)}
+                        />
+                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#1c1c1e', color: '#fff', pointerEvents: 'none', display: 'flex', alignItems: 'center', padding: '0 6px', fontSize: '11px', fontWeight: '700' }}>
+                           {formatDateDE(startISO)}
+                        </div>
+                     </div>
+
+                     <div 
+                        style={{ position: 'relative', width: 95, cursor: isLocked ? 'not-allowed' : 'pointer' }}
+                        onClick={(e) => {
+                          if (isLocked) return;
+                          const input = e.currentTarget.querySelector('input');
+                          if (input && input.showPicker) {
+                            try { input.showPicker(); } catch (err) {}
+                          }
+                        }}
+                     >
+                        <input 
+                          type="date" 
+                          className="input-table"
+                          style={{ width: '100%', fontSize: '11px', height: '24px', background: 'rgba(255,255,255,0.03)', color: '#fff', border: '1px solid var(--color-border)', padding: '0 4px' }}
+                          value={endISO}
+                          disabled={isLocked}
+                          onChange={(e) => handleDateUpdate(p.id, 'endDate', e.target.value)}
+                        />
+                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#1c1c1e', color: '#fff', pointerEvents: 'none', display: 'flex', alignItems: 'center', padding: '0 6px', fontSize: '11px', fontWeight: '700' }}>
+                           {formatDateDE(endISO)}
+                        </div>
+                     </div>
+
+                     <div style={{ width: 60 }}>
+                        <input 
+                          type="number"
+                          className="input-table"
+                          title="Dauer in Werktagen"
+                          style={{ width: '100%', fontSize: '11px', height: '24px', background: 'rgba(255,255,255,0.03)', color: 'var(--color-primary)', border: '1px solid var(--color-border)', textAlign: 'center', fontWeight: '700', padding: '0' }}
+                          value={getDurationDays(startISO, endISO)}
+                          disabled={isLocked}
+                          onChange={(e) => {
+                             if (isLocked) return;
+                             const days = parseInt(e.target.value);
+                             if (!isNaN(days) && days > 0) {
+                               try {
+                                 const newEnd = addWorkingDays(startISO, days - 1);
+                                 handleDateUpdate(p.id, 'endDate', newEnd);
+                               } catch (err) {}
+                             }
+                          }}
+                        />
+                     </div>
+
+                      <div style={{ width: 25, display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'center', justifyContent: 'center' }}>
+                        {(p.isEvent || p.isCustom) && (
+                          <button 
+                            onClick={() => { if (!isLocked) removePhase(p.id); }}
+                            style={{ border: 'none', background: 'transparent', padding: 0, cursor: isLocked ? 'not-allowed' : 'pointer', fontSize: '14px', opacity: isLocked ? 0.05 : 0.3 }}
+                            disabled={isLocked}
+                            title="Löschen"
+                          >🗑️</button>
+                        )}
+                      </div>
+
+                   </div>
+                 );
+               })}
+            </div>
+
+            {/* Gantt Grid */}
+            <div 
+              style={{ position: 'relative', flex: 1 }}
+              onClick={() => setSelectedPhaseId(null)}
+            >
+               {/* Header */}
+               <div style={{ display: 'flex', borderBottom: '1px solid var(--color-border)', background: 'rgba(255,255,255,0.02)', position: 'sticky', top: 0, zIndex: 20 }}>
+                 {ganttZoom === 'month' ? (
+                   monthsArray.map(i => (
+                     <div key={i} style={{ width: cellWidth, flexShrink: 0, borderRight: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: '700', color: 'var(--color-text-muted)', height: 40 }}>
+                       {getMonthLabel(i, project.startMonth, project.startYear)}
+                     </div>
+                   ))
+                 ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ display: 'flex', height: 16, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                        {daysArray.map((i, idx) => {
+                          const date = new Date(project.startYear, project.startMonth, 1 + i);
+                          const isMonday = date.getDay() === 1;
+                          if (isMonday || idx === 0) {
+                            return (
+                              <div key={i} style={{ width: cellWidth, flexShrink: 0, display: 'flex', alignItems: 'center', fontSize: '7px', fontWeight: '800', color: 'var(--color-text-muted)', opacity: 0.6, paddingLeft: '2px' }}>
+                                KW {getISOWeek(date)}
+                              </div>
+                            );
+                          }
+                          return <div key={i} style={{ width: cellWidth, flexShrink: 0 }} />;
+                        })}
+                      </div>
+                      <div style={{ display: 'flex', height: 20, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                       {monthsArray.map(i => {
+                         const mDate = new Date(project.startYear, project.startMonth + i, 1);
+                         const daysInMonth = new Date(project.startYear, project.startMonth + i + 1, 0).getDate();
+                         return (
+                           <div key={i} style={{ width: daysInMonth * cellWidth, flexShrink: 0, borderRight: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '9px', fontWeight: '800', color: 'var(--color-primary)', textTransform: 'uppercase' }}>
+                             {mDate.toLocaleString('de-DE', { month: 'long', year: 'numeric' })}
+                           </div>
+                         );
+                       })}
+                     </div>
+                     <div style={{ display: 'flex', height: 20 }}>
+                       {daysArray.map(i => {
+                         const date = new Date(project.startYear, project.startMonth, 1 + i);
+                         const isLastDay = date.getDate() === new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                         return (
+                           <div key={i} style={{ 
+                             width: cellWidth, 
+                             flexShrink: 0, 
+                             borderRight: isLastDay ? '1px solid var(--color-border)' : '1px solid rgba(255,255,255,0.05)', 
+                             display: 'flex', 
+                             alignItems: 'center', 
+                             justifyContent: 'center', 
+                             fontSize: '8px', 
+                             color: 'var(--color-text-muted)',
+                             background: [0, 6].includes(date.getDay()) ? 'rgba(255,255,255,0.03)' : 'transparent'
+                           }}>
+                             {date.getDate()}
+                           </div>
+                         );
+                       })}
+                     </div>
+                   </div>
+                 )}
+               </div>
+
+               {/* Rows & Bars */}
+               <div style={{ position: 'relative' }}>
+                 {/* Background Grid Lines */}
+                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex' }}>
+                   {ganttZoom === 'month' ? (
+                     monthsArray.map(i => (
+                       <div key={i} style={{ width: cellWidth, height: '100%', borderRight: '1px solid var(--color-border)', opacity: 0.1 }} />
+                     ))
+                   ) : (
+                     daysArray.map(i => {
+                       const d = new Date(project.startYear, project.startMonth, 1 + i);
+                       const isWeekend = [0, 6].includes(d.getDay());
+                       const isLastDay = d.getDate() === new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+                       return (
+                         <div key={i} style={{ 
+                           width: cellWidth, 
+                           height: '100%', 
+                           borderRight: isLastDay ? '1px solid var(--color-border)' : '1px solid rgba(255,255,255,0.03)', 
+                           background: isWeekend ? 'rgba(255,255,255,0.04)' : 'transparent',
+                           opacity: 1
+                         }} />
+                       );
+                     })
+                   )}
+                 </div>
+
+                  {/* Invoice Date Markers (3rd Monday) */}
+                  {showThirdMonday && (
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 15 }}>
+                      {monthsArray.map(i => {
+                        const refISO = getThirdMonday(i);
+                        const x = getPosFromISO(refISO);
+                        return (
+                          <div key={i} style={{ position: 'absolute', top: 0, left: x, bottom: 0, borderLeft: '1.5px dashed var(--color-success)', opacity: 0.8 }}>
+                            <div style={{ position: 'absolute', top: 8, left: 4, fontSize: '9px', fontWeight: '800', color: 'var(--color-success)', opacity: 0.9, background: 'rgba(0,0,0,0.6)', borderRadius: '2px', padding: '1px 3px' }}>
+                                {formatDateDE(refISO).substring(0, 5)}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                 {/* Rendering Bars & Milestones */}
+                 {activePhases.map((p, pIdx) => {
+                   const startISO = p.startDate || getISOFromIdx(p.startMonthIdx);
+                   const endISO = p.endDate || getISOFromIdx(p.startMonthIdx, true);
+                   
+                   const isMilestone = startISO === endISO;
+                   const barLeft = getPosFromISO(startISO);
+                   const barRight = isMilestone ? barLeft : getPosFromISO(endISO) + (ganttZoom === 'month' ? (cellWidth / 30) : cellWidth); 
+                   const barWidth = isMilestone ? 24 : Math.max(10, barRight - barLeft);
+
+                   return (
+                     <div key={p.id} id={`gantt-row-${p.id}`} style={{ height: rowHeight, borderBottom: '1px solid var(--color-border)', position: 'relative' }}>
+                        <div 
+                          className="gantt-bar-container"
+                          onClick={(e) => {
+                             e.stopPropagation();
+                             setSelectedPhaseId(p.id === selectedPhaseId ? null : p.id);
+                          }}
+                          style={{ 
+                            position: 'absolute', 
+                            top: isMilestone ? 18 : 15, 
+                            left: isMilestone ? barLeft - 12 : barLeft + 2, 
+                            width: isMilestone ? 24 : barWidth - 4, 
+                            height: isMilestone ? 24 : 30, 
+                            background: p.color || (p.isEvent ? '#888888' : '#cccccc'), 
+                            borderRadius: isMilestone ? '2px' : '4px',
+                            transform: isMilestone ? 'rotate(45deg)' : 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: selectedPhaseId === p.id ? '0 0 0 2px var(--color-primary), 0 4px 12px rgba(0,0,0,0.6)' : '0 4px 12px rgba(0,0,0,0.4)',
+                            zIndex: selectedPhaseId === p.id ? 101 : 5,
+                            transition: 'left 0.2s, width 0.2s, background 0.2s, box-shadow 0.2s',
+                            borderLeft: isMilestone ? 'none' : '4px solid rgba(255,255,255,0.3)',
+                            overflow: isMilestone ? 'visible' : 'hidden',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <span style={{ 
+                            fontSize: '10px', 
+                            fontWeight: '800', 
+                            color: isMilestone ? '#fff' : ((p.color === '#cccccc' || !p.color) ? '#111111' : '#ffffff'), 
+                            whiteSpace: 'nowrap',
+                            transform: isMilestone ? 'rotate(-45deg)' : 'none', 
+                            position: isMilestone ? 'absolute' : 'static',
+                            left: isMilestone ? '30px' : 'auto',
+                            background: isMilestone ? 'rgba(0,0,0,0.6)' : 'transparent',
+                            padding: isMilestone ? '2px 8px' : '0',
+                            borderRadius: isMilestone ? '4px' : '0',
+                            pointerEvents: 'none'
+                          }}>
+                            {p.isEvent ? p.name : `${p.id}: ${p.name}`}
+                          </span>
+                        </div>
+                     </div>
+                   );
+                 })}
+
+                 {/* Overlay Popover Layer */}
+                 {selectedPhaseId && (() => {
+                   const pIdx = activePhases.findIndex(ph => ph.id === selectedPhaseId);
+                   if (pIdx === -1) return null;
+                   const p = activePhases[pIdx];
+                   
+                   const startISO = p.startDate || getISOFromIdx(p.startMonthIdx);
+                   const barLeft = getPosFromISO(startISO);
+
+                   return (
+                     <div 
+                       className="card edit-popover"
+                       onClick={(e) => e.stopPropagation()}
+                       style={{ 
+                         position: 'absolute', 
+                         top: (pIdx * rowHeight) + 48, 
+                         left: Math.min(barLeft, monthsArray.length * cellWidth - 300), 
+                         width: '280px', 
+                         zIndex: 1000, 
+                         padding: '12px', 
+                         boxShadow: '0 12px 32px rgba(0,0,0,0.9)',
+                         border: '1px solid var(--color-primary)',
+                         background: '#1a1a1a',
+                         borderRadius: '8px',
+                         pointerEvents: 'auto'
+                       }}
+                     >
+                       <div className="flex-col gap-3">
+                         <div className="flex-row justify-between items-center">
+                           <h4 style={{ margin: 0, fontSize: '11px', color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{p.name || p.id} bearbeiten</h4>
+                           <button onClick={() => setSelectedPhaseId(null)} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '16px' }}>×</button>
+                         </div>
+
+                         <div>
+                           <label style={{ fontSize: '9px', color: '#888', marginBottom: '4px', display: 'block', fontWeight: '800' }}>VERKNÜPFUNG MIT</label>
+                           <select 
+                             className="input-table"
+                             style={{ width: '100%', fontSize: '11px', height: '30px', background: '#252525', borderRadius: '4px' }}
+                             value={p.dependencies?.[0]?.targetId || ''}
+                             disabled={isLocked}
+                             onChange={(e) => {
+                               if (isLocked) return;
+                               const targetId = e.target.value;
+                               const currentLink = p.dependencies?.[0] || { type: 'FS', offset: 0 };
+                               if (!targetId) {
+                                 updatePhaseSchedule(p.id, 'dependencies', []);
+                               } else {
+                                 updatePhaseSchedule(p.id, 'dependencies', [{ ...currentLink, targetId }]);
+                               }
+                             }}
+                           >
+                             <option value="">Keine Verknüpfung</option>
+                             {activePhases.filter(op => op.id !== p.id).map(op => (
+                               <option key={op.id} value={op.id}>{op.isEvent ? op.name : op.id}</option>
+                             ))}
+                           </select>
+                         </div>
+
+                         {p.dependencies?.length > 0 && (
+                           <div className="flex-row gap-2">
+                             <div style={{ flex: 1 }}>
+                               <label style={{ fontSize: '9px', color: '#888', marginBottom: '4px', display: 'block', fontWeight: '800' }}>TYP</label>
+                               <select 
+                                 className="input-table"
+                                 style={{ width: '100%', fontSize: '11px', height: '30px', background: '#252525', borderRadius: '4px' }}
+                                 value={p.dependencies[0].type || 'FS'}
+                                 disabled={isLocked}
+                                 onChange={(e) => {
+                                   if (isLocked) return;
+                                   const newDeps = [{ ...p.dependencies[0], type: e.target.value }];
+                                   updatePhaseSchedule(p.id, 'dependencies', newDeps);
+                                 }}
+                               >
+                                 <option value="FS">Ende-Anfang (EA)</option>
+                                 <option value="SS">Anfang-Anfang (AA)</option>
+                                 <option value="FF">Ende-Ende (EE)</option>
+                                 <option value="SF">Anfang-Ende (AE)</option>
+                                </select>
+                             </div>
+                             <div style={{ width: '80px' }}>
+                               <label style={{ fontSize: '9px', color: '#888', marginBottom: '4px', display: 'block', fontWeight: '800' }}>VERSATZ (T)</label>
+                               <input 
+                                 type="text"
+                                 className="input-table"
+                                 style={{ width: '100%', fontSize: '11px', height: '30px', textAlign: 'center', background: '#252525', borderRadius: '4px' }}
+                                 value={p.dependencies[0].offset !== undefined ? p.dependencies[0].offset : 0}
+                                 disabled={isLocked}
+                                 onChange={(e) => {
+                                   if (isLocked) return;
+                                   let val = e.target.value;
+                                   // Erlaube nur Zahlen und ein einzelnes Minuszeichen am Anfang
+                                   if (!/^-?\d*$/.test(val)) return;
+                                   const newDeps = [{ ...p.dependencies[0], offset: val }];
+                                   updatePhaseSchedule(p.id, 'dependencies', newDeps);
+                                 }}
+                                 onBlur={(e) => {
+                                   if (isLocked) return;
+                                   let val = Number(e.target.value);
+                                   if (isNaN(val)) val = 0;
+                                   const newDeps = [{ ...p.dependencies[0], offset: val }];
+                                   updatePhaseSchedule(p.id, 'dependencies', newDeps);
+                                 }}
+                               />
+                             </div>
+                           </div>
+                         )}
+
+                         <div>
+                           <label style={{ fontSize: '9px', color: '#888', marginBottom: '6px', display: 'block', fontWeight: '800' }}>BAUKASTENFARBE</label>
+                           <div className="flex-row gap-2">
+                             {['#cccccc', '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'].map(c => (
+                               <div 
+                                 key={c}
+                                 onClick={() => { if (!isLocked) updatePhase(p.id, 'color', c); }}
+                                 style={{ 
+                                   width: '24px', 
+                                   height: '24px', 
+                                   borderRadius: '4px', 
+                                   background: c, 
+                                   cursor: isLocked ? 'not-allowed' : 'pointer',
+                                   border: p.color === c ? '2px solid #fff' : '1px solid rgba(255,255,255,0.1)',
+                                   boxShadow: p.color === c ? '0 0 8px ' + c : 'none',
+                                   opacity: isLocked ? 0.5 : 1
+                                 }}
+                               />
+                             ))}
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   );
+                 })()}
+               </div>
+
+               {/* Dependency Layer (Arrows) */}
+               <svg style={{ position: 'absolute', top: 40, left: 0, width: monthsArray.length * cellWidth, height: project.phases.length * rowHeight, pointerEvents: 'none', zIndex: 2, overflow: 'visible' }}>
+                  <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1" />
+                    </marker>
+                  </defs>
+                  {activePhases.map((p, pIdx) => {
+                    return (p.dependencies || []).map((dep, dIdx) => {
+                      const predecessor = activePhases.find(ph => ph.id === dep.targetId);
+                      if (!predecessor) return null;
+                      const predIdx = activePhases.indexOf(predecessor);
+                      
+                      const predStartISO = predecessor.startDate || getISOFromIdx(predecessor.startMonthIdx);
+                      const predEndISO = predecessor.endDate || getISOFromIdx(predecessor.startMonthIdx, true);
+                      const succStartISO = p.startDate || getISOFromIdx(p.startMonthIdx);
+                      const succEndISO = p.endDate || getISOFromIdx(p.startMonthIdx, true);
+
+                      // Source point candidates
+                      const pxS = getPosFromISO(predStartISO);
+                      const pxE = getPosFromISO(predEndISO) + (cellWidth/30);
+                      
+                      // Target point candidates
+                      const sxS = getPosFromISO(succStartISO);
+                      const sxE = getPosFromISO(succEndISO) + (cellWidth/30);
+
+                      let sX, sY, tX, tY;
+                      sY = (predIdx * rowHeight) + (rowHeight / 2);
+                      tY = (pIdx * rowHeight) + (rowHeight / 2);
+
+                      switch(dep.type) {
+                        case 'SS': sX = pxS; tX = sxS; break;
+                        case 'FF': sX = pxE; tX = sxE; break;
+                        case 'SF': sX = pxS; tX = sxE; break;
+                        case 'FS':
+                        default: sX = pxE; tX = sxS; break;
+                      }
+
+                      const midX = sX + (tX - sX) / 2;
+
+                      return (
+                        <path 
+                          key={`${p.id}-${dep.targetId}`}
+                          d={`M ${sX} ${sY} L ${midX} ${sY} L ${midX} ${tY} L ${tX} ${tY}`}
+                          fill="none" 
+                          stroke="#6366f1" 
+                          strokeWidth="1.5"
+                          strokeDasharray={tX < sX ? "4 2" : "none"}
+                          markerEnd="url(#arrowhead)"
+                          style={{ opacity: 0.6 }}
+                        />
+                      );
+                    });
+                  })}
+               </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderMonthlyPlanning = () => (
+    <div className="card" style={{overflowX: 'auto'}}>
+      <div className="flex-row justify-between mb-4">
+        <div className="flex-col" style={{width: "220px", minWidth: "220px"}}>
+          <h2>Geplante Leistungsstände (%)</h2>
+          <label style={{fontSize: '11px', fontWeight: '700', color: 'var(--color-primary)', textTransform: 'uppercase'}}>3. MONTAG DES MONATS</label>
+        </div>
+        <div className="flex-row gap-6">
+           <label 
+             style={{ 
+               display: 'flex',
+               alignItems: 'center',
+               gap: '8px',
+               height: '34px',
+               padding: '0',
+               background: 'transparent',
+               border: 'none',
+               outline: 'none',
+               boxShadow: 'none',
+               color: project.autoProgress ? 'var(--color-success)' : 'var(--color-text)',
+               fontSize: '12px',
+               fontWeight: '600',
+               cursor: isLocked ? 'not-allowed' : 'pointer',
+               whiteSpace: 'nowrap',
+               opacity: isLocked ? 0.6 : 1
+             }}
+             title="Automatische Berechnung anhand Zeitplan umschalten"
+           >
+             <input 
+               type="checkbox"
+               checked={project.autoProgress}
+               onChange={() => {
+                 if (isLocked) return;
+                 pushToHistory();
+                 updateProjectField('autoProgress', !project.autoProgress);
+               }}
+               disabled={isLocked}
+               style={{ 
+                 cursor: isLocked ? 'not-allowed' : 'pointer',
+                 accentColor: 'var(--color-primary)',
+                 width: '14px',
+                 height: '14px',
+                 margin: 0
+               }}
+             />
+             <span style={{ color: project.autoProgress ? "var(--color-success)" : "inherit" }}>Anhand Zeitplan berechnen</span>
+           </label>
+           <button className="btn btn-outline" onClick={removeLastMonth} disabled={project.autoProgress || isLocked}>- Monat löschen</button>
+           <button className="btn btn-primary" onClick={addMonth} disabled={isLocked}>+ Monat hinzufügen</button>
+        </div>
+      </div>
+      <div className="table-container" ref={planningScrollRef}>
+        <table style={{ width: 'auto' }}>
+          <thead>
+            <tr>
+              <th rowSpan={2} className="sticky-col" style={{ width: "250px", minWidth: "250px", verticalAlign: 'bottom', borderRight: '1px solid var(--color-border)' }}>LP</th>
+              {activeIndices.map(i => (
+                <th key={i} id={`month-col-${i}`} colSpan={2} className="td-number" style={{ textAlign: 'center', borderRight: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)', paddingBottom: '4px', width: "220px", minWidth: "220px" }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <span style={{ fontSize: '11px', fontWeight: '800' }}>{getMonthLabel(i, project.startMonth, project.startYear)}</span>
+                    <span style={{ fontSize: '9px', color: 'var(--color-text-muted)', fontWeight: '400', marginTop: '2px' }}>Stichtag: {formatDateDE(getThirdMonday(i))}</span>
+                  </div>
+                </th>
+              ))}
+            </tr>
+            <tr>
+              {activeIndices.map(i => (
+                <React.Fragment key={i}>
+                  <th className="td-number" style={{ width: '150px', minWidth: '150px', whiteSpace: 'nowrap', paddingLeft: '12px', fontSize: '10px', textAlign: 'left' }}>% Leistungsstand</th>
+                  <th className="td-number" style={{ width: '70px', minWidth: '70px', whiteSpace: 'nowrap', color: 'var(--color-text-muted)', borderRight: '1px solid var(--color-border)', paddingRight: '12px', fontSize: '10px', textAlign: 'right' }}>% PROJEKT PRO</th>
+                </React.Fragment>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { label: 'Objektplanung', phases: project.phases, overallBudget: project.overallBudget, abId: null },
+              ...(project.additionalBudgets || []).map(ab => ({ label: ab.label, phases: ab.phases, overallBudget: ab.overallBudget, abId: ab.id }))
+            ].map((group, gIdx) => (
+              <React.Fragment key={group.abId || 'main'}>
+                {/* Group Header Row */}
+                <tr style={{ background: 'rgba(255,255,255,0.03)' }}>
+                  <td className="sticky-col" colSpan={1 + activeIndices.length * 2} style={{ padding: '8px 12px', fontSize: '11px', fontWeight: '800', textTransform: 'uppercase', color: 'var(--color-primary)', borderRight: '1px solid var(--color-border)', background: '#1a1a1a' }}>
+                    {group.label}
+                  </td>
+                </tr>
+                {group.phases.filter(p => !p.isEvent).map((p, pIdx) => {
+                  const shareOfProject = p.customShare !== undefined ? p.customShare : p.defaultShare;
+                  const phaseBudget = p.feeType === 'fixed' 
+                    ? (Number(p.fixedAmount) || 0) 
+                    : (group.overallBudget * shareOfProject) / 100;
+                  const isZero = phaseBudget === 0;
+
+                  // Find master phase for auto-progress dates if this is an additional budget
+                  const masterPhase = group.abId ? (project.phases.find(mp => mp.id === p.id) || p) : p;
+
+                  return (
+                    <tr 
+                      key={group.abId ? `${group.abId}-${p.id}` : p.id} 
+                      style={{ 
+                        opacity: isZero ? 0.3 : 1, 
+                        transition: 'background 0.2s, opacity 0.2s',
+                        background: 'transparent'
+                      }}
+                    >
+                      <td className="sticky-col" style={{ width: "250px", minWidth: "250px", whiteSpace: 'nowrap', borderRight: '1px solid var(--color-border)', verticalAlign: 'top', paddingTop: '10px', background: '#121212' }}>
+                        <div className="flex-row" style={{ alignItems: 'flex-start', gap: '8px' }}>
+                          <div style={{ color: 'var(--color-text-muted)', fontSize: '14px', width: '12px', opacity: 0.5, marginTop: '2px' }}>⋮⋮</div>
+                          <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <strong>{p.id} - {p.name}</strong>
+                            <span style={{ fontSize: '10px', color: 'var(--color-text-muted)', marginTop: '2px' }}>
+                               Budget: {formatCurrency(phaseBudget)}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      {activeIndices.map(i => {
+                        let realVal = p.monthlyProgress[i];
+                        let displayVal = 0;
+                        let isInherited = false;
+                        let isAuto = project.autoProgress;
+
+                        if (isAuto) {
+                          displayVal = calculateAutoProgress(masterPhase, i);
+                        } else {
+                          if (realVal === undefined || realVal === null || realVal === '') {
+                            isInherited = true;
+                            for (let j = i - 1; j >= 0; j--) {
+                              if (p.monthlyProgress[j] !== undefined && p.monthlyProgress[j] !== null && p.monthlyProgress[j] !== '') {
+                                displayVal = Number(p.monthlyProgress[j]);
+                                break;
+                              }
+                            }
+                          } else {
+                            displayVal = Number(realVal);
+                          }
+                        }
+
+                        let prevVal = 0;
+                        if (isAuto) {
+                          prevVal = i > 0 ? calculateAutoProgress(masterPhase, i - 1) : 0;
+                        } else {
+                          for (let j = i - 1; j >= 0; j--) {
+                            if (p.monthlyProgress[j] !== undefined && p.monthlyProgress[j] !== null && p.monthlyProgress[j] !== '') {
+                              prevVal = Number(p.monthlyProgress[j]);
+                              break;
+                            }
+                          }
+                        }
+                        
+                        const deltaPercent = Math.max(0, displayVal - prevVal);
+                        const deltaEuro = (phaseBudget * deltaPercent) / 100;
+                        const cumulativePercentOfTotal = (displayVal / 100) * shareOfProject;
+                        const deltaPercentOfTotal = (deltaPercent / 100) * shareOfProject;
+
+                        return (
+                        <React.Fragment key={i}>
+                          <td className="td-number" style={{ width: '150px', minWidth: '150px', paddingLeft: '12px', textAlign: 'left', background: isInherited ? 'rgba(255,255,255,0.01)' : 'transparent' }}>
+                            <div className="flex-row items-center" style={{ gap: '2px' }}>
+                              <input 
+                                type="number" 
+                                className="input-table"
+                                style={{ 
+                                   width: '45px', 
+                                   textAlign: 'left', 
+                                   fontWeight: '600',
+                                   fontStyle: 'normal',
+                                   opacity: isInherited ? 0.3 : 1,
+                                   color: isAuto ? 'var(--color-success)' : 'inherit'
+                                }}
+                                value={isInherited && displayVal === 0 && !isAuto ? '' : displayVal}
+                                onChange={e => { if (!isLocked) updatePhaseMonth(p.id, i, e.target.value, group.abId); }}
+                                onBlur={() => { if (!isLocked) handleBlurMonth(p, i); }}
+                                onFocus={e => {
+                                   if (isAuto || isLocked) return;
+                                   pushToHistory();
+                                   handleFocusMonth(p, i);
+                                   const t = e.target;
+                                   setTimeout(() => t.select(), 0);
+                                }}
+                                readOnly={isAuto || isLocked}
+                                placeholder="0"
+                              /><span style={{fontSize: '12px', color: 'var(--color-text-muted)'}}>%</span>
+                            </div>
+                            <div style={{ fontSize: '9px', marginTop: '2px', color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
+                               {deltaPercent > 0 ? `+${deltaPercent}% (${formatCurrency(deltaEuro)})` : '—'}
+                            </div>
+                          </td>
+                          <td className="td-number" style={{ width: '70px', minWidth: '70px', color: 'var(--color-text-muted)', fontSize: '11px', borderRight: '1px solid var(--color-border)', paddingRight: '12px', textAlign: 'right', verticalAlign: 'top', paddingTop: '14px' }}>
+                            <div style={{ fontWeight: '600', color: displayVal > 0 ? 'var(--color-text)' : 'inherit' }}>
+                              {cumulativePercentOfTotal.toLocaleString('de-DE', {minimumFractionDigits: 1, maximumFractionDigits: 1})}%
+                            </div>
+                            {deltaPercent > 0 && (
+                              <div style={{ fontSize: '8px', color: 'var(--color-success)', marginTop: '1px' }}>
+                                +{deltaPercentOfTotal.toLocaleString('de-DE', {minimumFractionDigits: 1, maximumFractionDigits: 1})}%
+                              </div>
+                            )}
+                          </td>
+                        </React.Fragment>
+                      )})}
+                    </tr>
+                  )
+                })}
+              </React.Fragment>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr style={{ background: 'var(--color-surface)', borderTop: '2px solid var(--color-border)' }}>
+              <td className="sticky-col" style={{ width: "250px", minWidth: "250px", fontWeight: '800', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '2px', borderRight: '1px solid var(--color-border)', background: '#121212' }}>
+                Summe Honorar
+              </td>
+              {activeIndices.map(i => {
+                const net = calculations.monthlyCashflowData[i] || 0;
+                const side = calculations.monthlySideCostsData[i] || 0;
+                const total = net + side;
+                return (
+                  <React.Fragment key={i}>
+                    <td className="td-number" style={{ width: "150px", minWidth: "150px", paddingLeft: "12px", textAlign: 'left', background: 'var(--color-surface)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', padding: 'var(--spacing-2) 0' }}>
+                        <span style={{ fontSize: '12px', fontWeight: '700', color: 'var(--color-primary)' }}>{formatCurrency(total)}</span>
+                        <span style={{ fontSize: '9px', color: 'var(--color-text-muted)' }}>
+                          {formatCurrency(net)} Net. | {formatCurrency(side)} NK
+                        </span>
+                      </div>
+                    </td>
+                    <td className="td-number" style={{ width: "70px", minWidth: "70px", borderRight: "1px solid var(--color-border)", background: 'var(--color-surface)', textAlign: 'right', paddingRight: '12px', paddingTop: '10px', verticalAlign: 'top', fontSize: '11px', fontWeight: '700', color: 'var(--color-primary)' }}>
+                      {((net / (calculations.totalBudget || 1)) * 100).toLocaleString('de-DE', {minimumFractionDigits: 1, maximumFractionDigits: 1})}%
+                    </td>
+                  </React.Fragment>
+                )
+              })}
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  );
+
+  const renderActivities = () => (
+    <div className="card">
+      <div className="flex-row justify-between items-center mb-6">
+        <h2>📋 Projekt-Aktivitäten</h2>
+        <div style={{ fontSize: '11px', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          Letzte 100 Änderungen
+        </div>
+      </div>
+      
+      <div className="table-container">
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead style={{ borderBottom: '2px solid var(--color-border)' }}>
+            <tr>
+              <th style={{ textAlign: 'left', padding: '12px', width: '150px', fontSize: '11px', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>Zeitpunkt</th>
+              <th style={{ textAlign: 'left', padding: '12px', fontSize: '11px', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>Aktivität</th>
+              <th style={{ textAlign: 'left', padding: '12px', width: '200px', fontSize: '11px', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>Gerät / PC</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(project.activities || []).map((action, idx) => (
+              <tr key={action.id} style={{ borderBottom: '1px solid var(--color-border)', animation: 'fadeInSlideUp 0.3s ease-out' }}>
+                <td style={{ padding: '12px', fontSize: '12px', color: 'var(--color-text-muted)' }}>
+                  {action.timestamp}
+                </td>
+                <td style={{ padding: '12px', fontSize: '13px', fontWeight: '500' }}>
+                  {action.description}
+                </td>
+                <td style={{ padding: '12px', fontSize: '11px', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>
+                  {action.device}
+                </td>
+              </tr>
+            ))}
+            {(!project.activities || project.activities.length === 0) && (
+              <tr>
+                <td colSpan="3" style={{ padding: '40px', textAlign: 'center', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>
+                  Noch keine Aktivitäten aufgezeichnet.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="app-container">
+      {/* SIDEBAR */}
+      <aside className="sidebar">
+        <div style={{ paddingBottom: 'var(--spacing-6)', borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            {/* Zeile 1: Logo + REPLANA */}
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '2px', alignItems: 'center' }}>
+              <img 
+                src="assets/logo.png" 
+                alt="REPLANA Logo" 
+                style={{ width: '40px', height: '40px', objectFit: 'contain', flexShrink: 0 }}
+              />
+              <h1 style={{fontSize: '24px', letterSpacing: '4px', fontWeight: '800', lineHeight: '1', margin: '0'}}>REPLANA</h1>
+            </div>
+            {/* Zeile 2: Projektnummer (unter Logo) + Projektname (unter REPLANA) */}
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '0' }}>
+              <span style={{ width: '40px', boxSizing: 'border-box', paddingLeft: '8px', flexShrink: 0, fontSize: '10px', fontWeight: '400', color: 'var(--color-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                {project.projectNumber || '0000'}
+              </span>
+              <span style={{ fontSize: '10px', fontWeight: '400', color: 'var(--color-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', paddingLeft: '4px' }}>
+                {project.name}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <nav className="flex-col mt-4">
+          <button 
+            className={`btn ${activeTab === 'dashboard' ? 'btn-primary' : 'btn-outline'}`}
+            style={{justifyContent: 'flex-start', textAlign: 'left'}}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            📊 Dashboard
+          </button>
+          <button 
+            className={`btn ${activeTab === 'budget' ? 'btn-primary' : 'btn-outline'}`}
+            style={{justifyContent: 'flex-start', textAlign: 'left'}}
+            onClick={() => setActiveTab('budget')}
+          >
+            💶 Budget
+          </button>
+          <button 
+            className={`btn ${activeTab === 'planning' ? 'btn-primary' : 'btn-outline'}`}
+            style={{justifyContent: 'flex-start', textAlign: 'left'}}
+            onClick={() => setActiveTab('planning')}
+          >
+            📅 Leistungsstände
+          </button>
+          <button 
+            className={`btn ${activeTab === 'schedule' ? 'btn-primary' : 'btn-outline'}`}
+            style={{justifyContent: 'flex-start', textAlign: 'left'}}
+            onClick={() => setActiveTab('schedule')}
+          >
+            🕒 Zeitplan
+          </button>
+          <button 
+            className={`btn ${activeTab === 'stammdaten' ? 'btn-primary' : 'btn-outline'}`}
+            style={{justifyContent: 'flex-start', textAlign: 'left'}}
+            onClick={() => setActiveTab('stammdaten')}
+          >
+            ⚙️ Stammdaten
+          </button>
+          <button 
+            className={`btn ${activeTab === 'activities' ? 'btn-primary' : 'btn-outline'}`}
+            style={{justifyContent: 'flex-start', textAlign: 'left'}}
+            onClick={() => setActiveTab('activities')}
+          >
+            📋 Aktivitäten
+          </button>
+        </nav>
+
+
+      </aside>
+
+      {/* MAIN CONTENT */}
+      <main className="main-content">
+        <div className="tabs" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="flex-row" style={{ gap: 'var(--spacing-6)' }}>
+            <div className={`tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</div>
+            <div className={`tab ${activeTab === 'budget' ? 'active' : ''}`} onClick={() => setActiveTab('budget')}>Budget</div>
+            <div className={`tab ${activeTab === 'planning' ? 'active' : ''}`} onClick={() => setActiveTab('planning')}>Leistungsstände</div>
+            <div className={`tab ${activeTab === 'schedule' ? 'active' : ''}`} onClick={() => setActiveTab('schedule')}>Zeitplan</div>
+            <div className={`tab ${activeTab === 'stammdaten' ? 'active' : ''}`} onClick={() => setActiveTab('stammdaten')}>Stammdaten</div>
+            <div className={`tab ${activeTab === 'activities' ? 'active' : ''}`} onClick={() => setActiveTab('activities')}>Aktivitäten</div>
+          </div>
+          
+          <div className="flex-row" style={{ gap: 'var(--spacing-4)' }}>
+            <div className="flex-row" style={{ gap: '0' }}>
+              <button 
+                 className="btn btn-outline"
+                 style={{ 
+                   display: 'flex',
+                   alignItems: 'center',
+                   justifyContent: 'center',
+                   padding: '0 var(--spacing-4)', 
+                   height: '34px',
+                   opacity: (history.length > 0 && !isLocked) ? 1 : 0.2,
+                   cursor: (history.length > 0 && !isLocked) ? 'pointer' : 'not-allowed',
+                   border: 'none',
+                   background: 'transparent',
+                   color: 'var(--color-text)'
+                 }}
+                 onClick={handleUndo}
+                 disabled={history.length === 0 || isLocked}
+                 title="Rückgängig"
+              >
+                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter">
+                   <path d="M10 19L3 12L10 5" />
+                   <path d="M3 12H16C18.7614 12 21 14.2386 21 17V19" />
+                 </svg>
+              </button>
+
+              <button 
+                 className="btn btn-outline"
+                 style={{ 
+                   display: 'flex',
+                   alignItems: 'center',
+                   justifyContent: 'center',
+                   padding: '0 var(--spacing-4)', 
+                   height: '34px',
+                   opacity: (redoStack.length > 0 && !isLocked) ? 1 : 0.2,
+                   cursor: (redoStack.length > 0 && !isLocked) ? 'pointer' : 'not-allowed',
+                   border: 'none',
+                   background: 'transparent',
+                   color: 'var(--color-text)'
+                 }}
+                 onClick={handleRedo}
+                 disabled={redoStack.length === 0 || isLocked}
+                 title="Wiederholen"
+              >
+                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter">
+                   <path d="M14 19L21 12L14 5" />
+                   <path d="M21 12H8C5.23858 12 3 14.2386 3 17V19" />
+                 </svg>
+              </button>
+            </div>
+
+            <div style={{ display: 'inline-grid', gridTemplateColumns: 'min-content', justifyItems: 'stretch', gap: '0', marginLeft: 'auto' }}>
+              {project.lastSaved && (
+                <div style={{ fontSize: '9px', color: 'var(--color-text-muted)', marginBottom: '4px', letterSpacing: '0.05em', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                  ZULETZT GESPEICHERT: {project.lastSaved}
+                </div>
+              )}
+              <button 
+                 className={`btn ${isDirty && !isLocked ? 'pulse-save' : 'btn-outline'}`}
+                 style={{ 
+                   width: '100%',
+                   display: 'flex',
+                   alignItems: 'center',
+                   justifyContent: 'center',
+                   padding: '0 var(--spacing-4)', 
+                   fontSize: '11px',
+                   height: '34px',
+                   fontWeight: '700',
+                   background: (isDirty && !isLocked) ? '#22c55e' : 'transparent', 
+                   color: (isDirty && !isLocked) ? '#ffffff' : (isLocked ? 'var(--color-text-muted)' : '#ef4444'),
+                   border: (isDirty && !isLocked) ? 'none' : `1px solid ${isLocked ? 'var(--color-border)' : '#ef4444'}`,
+                   boxShadow: (isDirty && !isLocked) ? '0 0 15px rgba(34, 197, 94, 0.4)' : 'none',
+                   opacity: 1,
+                   marginBottom: '4px',
+                   cursor: 'pointer',
+                   transition: 'all 0.3s ease',
+                   boxSizing: 'border-box'
+                 }}
+                 onClick={() => {
+                   if (isLocked) setShowUnlockModal(!showUnlockModal);
+                   else if (isDirty) handleSave();
+                   else setIsLocked(true);
+                 }}
+              >
+                 {isLocked ? '🔒 Gesperrt' : (isDirty ? '💾 Änderungen speichern' : '🔓 Sperren')}
+              </button>
+
+              {/* INLINE UNLOCK FIELD */}
+              {isLocked && showUnlockModal && (
+                <div 
+                  style={{ 
+                    position: 'absolute',
+                    top: '40px',
+                    right: '0',
+                    zIndex: 1000,
+                    background: 'var(--color-surface)',
+                    border: '1px solid var(--color-border)',
+                    padding: 'var(--spacing-4)',
+                    width: '240px',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+                    animation: 'fadeInSlideUp 0.3s ease-out'
+                  }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <form onSubmit={handleUnlock} className="flex-col">
+                    <div style={{ fontSize: '9px', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '8px' }}>
+                      Passwort zum Entsperren:
+                    </div>
+                    <input 
+                      type="password"
+                      placeholder="••••"
+                      autoFocus
+                      value={unlockPassword}
+                      onChange={(e) => setUnlockPassword(e.target.value)}
+                      style={{ background: 'var(--color-base)', border: '1px solid var(--color-border)', textAlign: 'center', fontSize: '18px', letterSpacing: '4px' }}
+                    />
+                    {unlockError && (
+                      <div style={{ color: '#ef4444', fontSize: '10px', marginTop: '4px' }}>
+                        Ungültiges Passwort
+                      </div>
+                    )}
+                    <button type="submit" className="btn btn-primary" style={{ marginTop: '8px', padding: '8px', fontSize: '10px' }}>
+                      Entsperren
+                    </button>
+                  </form>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div key={activeTab} className="tab-content-active">
+          {activeTab === 'dashboard' && renderDashboard()}
+          {activeTab === 'stammdaten' && renderStammdaten()}
+          {activeTab === 'budget' && renderBudgetSettings()}
+          {activeTab === 'budget' && renderAdditionalBudgets()}
+          {activeTab === 'planning' && renderMonthlyPlanning()}
+          {activeTab === 'schedule' && renderSchedule()}
+          {activeTab === 'activities' && renderActivities()}
+        </div>
+
+        {/* CUSTOM SAVE MODAL */}
+        {showSaveConfirm && (
+          <div className="modal-overlay" onClick={() => setShowSaveConfirm(false)}>
+            <div className="modal-card" onClick={e => e.stopPropagation()}>
+              <h2 style={{ marginBottom: 'var(--spacing-4)' }}>Änderungen speichern?</h2>
+              <p style={{ color: 'var(--color-text-muted)', marginBottom: 'var(--spacing-8)' }}>
+                Alle Leistungsstände und Budget-Anpassungen werden dauerhaft gesichert.
+              </p>
+              <div className="flex-row justify-center gap-4">
+                <button 
+                  className="btn btn-primary" 
+                  style={{ minWidth: '120px', background: '#22c55e', borderColor: '#22c55e' }}
+                  onClick={confirmSave}
+                >
+                  Speichern
+                </button>
+                <button 
+                  className="btn btn-outline" 
+                  style={{ minWidth: '120px' }}
+                  onClick={() => setShowSaveConfirm(false)}
+                >
+                  Abbrechen
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+
+      </main>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+
+</script>
+</body></html>
